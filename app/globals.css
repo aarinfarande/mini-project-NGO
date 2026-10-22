@@ -55,12 +55,13 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
 }
 
-.floating-pill-toolbar {
-  background-color: #080EE0;
+ .floating-pill-toolbar {
+  background-color: #080EE0 !important;
+  background: #080EE0 !important;
   border-radius: 9999px;
   padding: 14px 10px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  box-shadow: 0 8px 24px -4px rgba(76, 152, 228, 0.4);
+  box-shadow: 0 8px 24px -4px rgba(8, 14, 224, 0.4);
 }
