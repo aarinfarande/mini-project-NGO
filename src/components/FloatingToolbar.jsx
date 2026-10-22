@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { LayoutGrid, FolderKanban, ListTodo, TrendingUp, LogOut } from 'lucide-react';
 
@@ -13,7 +11,11 @@ export default function FloatingToolbar({ currentTab, onSelectTab, onSignOut }) 
 
   return (
     <aside className="hidden md:flex flex-col items-center mr-6 self-start sticky top-24 z-20">
-      <nav className="floating-pill-toolbar" aria-label="Quick Toolbar">
+      <nav 
+        className="floating-pill-toolbar !bg-[#080EE0]" 
+        style={{ backgroundColor: '#080EE0' }} 
+        aria-label="Quick Toolbar"
+      >
         {tools.map((item) => {
           const Icon = item.icon;
           const isActive = currentTab === item.id;
@@ -39,7 +41,7 @@ export default function FloatingToolbar({ currentTab, onSelectTab, onSignOut }) 
           type="button"
           id="sidebarSignOutBtn"
           onClick={onSignOut}
-          className="hover:!bg-white hover:!text-[#F47B20] text-white transition-all cursor-pointer group"
+          className="hover:!bg-white hover:!text-[#080EE0] text-white transition-all cursor-pointer group"
           aria-label="Sign Out"
         >
           <LogOut size={20} className="transition-transform group-hover:scale-105" />
@@ -49,4 +51,3 @@ export default function FloatingToolbar({ currentTab, onSelectTab, onSignOut }) 
     </aside>
   );
 }
-
