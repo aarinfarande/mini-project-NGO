@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, ChevronRight, Check } from 'lucide-react';
 
 export default function LoginPage({ onLogin, onSelectRoleDirect, onOpenHelp, onOpenForgotPw }) {
-  const [username, setUsername] = useState('admin@grassroots.ngo');
+  const [username, setUsername] = useState('sevavardhiniemp.ngo');
   const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,7 +26,7 @@ export default function LoginPage({ onLogin, onSelectRoleDirect, onOpenHelp, onO
           <div>
             <div className="mb-8">
               <span className="text-xs uppercase tracking-widest text-[#6B625A] font-semibold">
-                NGO Management Workspace
+                Nirikshak
               </span>
               <h1 className="text-4xl sm:text-5xl font-semibold font-heading text-[#292524] mt-2 mb-2">
                 Namaste
@@ -107,68 +107,24 @@ export default function LoginPage({ onLogin, onSelectRoleDirect, onOpenHelp, onO
             </form>
           </div>
 
-          {/* Quick Demo Sign In */}
-          <div className="mt-8 pt-6 border-t border-[#E5DDD3]/70">
-            <p className="text-xs text-[#6B625A] uppercase tracking-wider mb-2 font-semibold">
-              Instant Demonstration Sign In:
-            </p>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => onSelectRoleDirect ? onSelectRoleDirect('admin') : onLogin()}
-                className="px-2.5 py-1.5 text-xs rounded-lg border border-[#292524]/20 hover:border-[#292524] text-[#292524] font-medium bg-[#FFF9F2] hover:bg-white transition-all text-center cursor-pointer"
-              >
-                Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => onSelectRoleDirect ? onSelectRoleDirect('pm') : onLogin()}
-                className="px-2.5 py-1.5 text-xs rounded-lg border border-[#F47B20]/40 hover:border-[#F47B20] text-[#F47B20] font-medium bg-[#FFF9F2] hover:bg-white transition-all text-center cursor-pointer"
-              >
-                Project Manager
-              </button>
-              <button
-                type="button"
-                onClick={() => onSelectRoleDirect ? onSelectRoleDirect('coordinator') : onLogin()}
-                className="px-2.5 py-1.5 text-xs rounded-lg border border-[#F9B233]/70 hover:border-[#F9B233] text-[#292524] font-medium bg-[#FFF9F2] hover:bg-white transition-all text-center cursor-pointer"
-              >
-                Coordinator
-              </button>
-            </div>
-          </div>
         </section>
 
         {/* Right Panel (Golden 40% Accent #F9B233) */}
         <section className="w-full md:w-[40%] bg-[#F9B233] p-8 sm:p-12 flex flex-col justify-between text-white relative">
           <div className="space-y-3">
             <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold tracking-wider uppercase text-white">
-              Field & Portfolio Engine
+              SevaVardhini Exclusive
             </span>
             <h2 className="text-3xl font-heading text-white font-semibold leading-tight">
-              Turn grassroot effort into measurable change.
+              Make every effort count
             </h2>
             <p className="text-sm text-white/90 leading-relaxed font-body">
-              A unified system linking village field workers, regional project leads, and executive oversight without administrative friction.
+              A clear, shared workspace for the people turning good intentions into measurable change.
             </p>
           </div>
 
-          <div className="my-8 space-y-4 text-xs font-medium text-white/90">
-            <div className="flex items-start gap-3">
-              <span className="p-1 rounded-full bg-white/25 mt-0.5"><Check size={14} /></span>
-              <span>100% Audit-ready tracking for village water, schools, and clinics</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="p-1 rounded-full bg-white/25 mt-0.5"><Check size={14} /></span>
-              <span>Instant role switching between Administrator, PM, and Coordinator</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="p-1 rounded-full bg-white/25 mt-0.5"><Check size={14} /></span>
-              <span>Offline-ready field update submission and live checklist metrics</span>
-            </div>
-          </div>
-
           <div className="flex items-center justify-between pt-4 border-t border-white/20">
-            <span className="text-xs text-white/80">NGO Suite v2.4</span>
+            <span className="text-xs text-white/80">Version 1</span>
             <button
               type="button"
               onClick={handleSubmit}
