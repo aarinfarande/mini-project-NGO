@@ -835,15 +835,12 @@ function renderDashboardScreen() {
             </div>
           </div>
         ` : ''}
+<!-- Main Body Area with Floating Left Pill Toolbar -->
+<div class="flex-1 flex relative p-4 sm:p-6 lg:p-8">
 
-        <!-- Main Body Area with Floating Left Pill Toolbar -->
-        <div class="flex-1 flex relative p-4 sm:p-6 lg:p-8">
-          
-          <!-- Floating Left Vertical Toolbar (Pill Sidebar) -->
-          <!-- Styled with Saffron #F47B20 -->
-          <aside class="hidden md:flex flex-col items-center mr-6 self-start sticky top-24 z-20">
-            <nav class="floating-pill-toolbar" aria-label="Quick Toolbar">
-              
+  <!-- Floating Left Vertical Toolbar (Pill Sidebar) -->
+  <!-- Styled with Blue #080EE0 -->
+  <aside class="hidden md:flex flex-col items-center mr-6 self-start sticky top-24 z-20">
               <!-- Grid / Dashboard (LayoutGrid) -->
               <button 
                 type="button" 
