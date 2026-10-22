@@ -596,7 +596,7 @@
 
                   {/* Floating Pill Toolbar: Dashboard, Projects, Tasks, Analytics + Divider + Sign Out */}
                   <aside className="hidden md:flex flex-col items-center mr-6 self-start sticky top-24 z-20">
-                    <nav className="floating-pill-toolbar" aria-label="Quick Toolbar">
+                                    <nav className="floating-pill-toolbar !bg-[#080EE0]" style={{ backgroundColor: '#080EE0' }} aria-label="Quick Toolbar">
                       <button type="button" onClick={() => setTab('dashboard')} className={tab === 'dashboard' ? 'active' : ''} aria-label="Dashboard Overview">
                         <Icons.LayoutGrid />
                         <span className="tooltip">Dashboard Overview</span>
