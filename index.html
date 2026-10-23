@@ -126,19 +126,20 @@
     ];
 
     const initialTasks = [
-      { id: 't1', title: 'Commission solar filtration pump at Hamlet 4', project: 'Clean Water Initiative', assignee: 'Suresh Kumar', role: 'Coordinator', status: 'completed', priority: 'High', dueDate: 'Oct 14, 2026' },
-      { id: 't2', title: 'Deliver 15 STEM learning kits to Model Upper Primary School', project: 'Schools for all', assignee: 'Meena Solanki', role: 'Coordinator', status: 'completed', priority: 'Medium', dueDate: 'Oct 15, 2026' },
-      { id: 't3', title: 'Collect water quality test samples post-monsoon', project: 'Clean Water Initiative', assignee: 'Anita Roy', role: 'Project Manager', status: 'completed', priority: 'High', dueDate: 'Oct 15, 2026' },
-      { id: 't4', title: 'Publish Phase 1 telemedicine diagnostic report', project: 'Mobile Health Clinic', assignee: 'Dr. Kavita Rao', role: 'Project Manager', status: 'completed', priority: 'Medium', dueDate: 'Oct 16, 2026' },
-      { id: 't5', title: 'Distribute sanitary napkin hygiene kits in Zone 2', project: 'Mobile Health Clinic', assignee: 'Pooja Patil', role: 'Coordinator', status: 'completed', priority: 'Normal', dueDate: 'Oct 16, 2026' },
-      { id: 't6', title: 'Conduct community water management audit', project: 'Clean Water Initiative', assignee: 'Suresh Kumar', role: 'Coordinator', status: 'completed', priority: 'Normal', dueDate: 'Oct 16, 2026' },
-      { id: 't7', title: 'Inspect pipeline laying in Jaisalmer cluster 3', project: 'Clean Water Initiative', assignee: 'Anita Roy', role: 'Project Manager', status: 'in-progress', priority: 'High', dueDate: 'Oct 18, 2026' },
-      { id: 't8', title: 'Conduct parent-teacher digital awareness session', project: 'Schools for all', assignee: 'Rahul Verma', role: 'Project Manager', status: 'in-progress', priority: 'Medium', dueDate: 'Oct 19, 2026' },
-      { id: 't9', title: 'Upload geo-tagged photographs of borewell construction', project: 'Clean Water Initiative', assignee: 'Suresh Kumar', role: 'Coordinator', status: 'in-progress', priority: 'High', dueDate: 'Oct 20, 2026' },
-      { id: 't10', title: 'Verify vendor invoice for smartboard hardware', project: 'Schools for all', assignee: 'Rahul Verma', role: 'Project Manager', status: 'review', priority: 'Medium', dueDate: 'Oct 21, 2026' },
-      { id: 't11', title: 'Submit monthly field fuel vouchers & muster roll', project: 'Mobile Health Clinic', assignee: 'Pooja Patil', role: 'Coordinator', status: 'review', priority: 'Normal', dueDate: 'Oct 22, 2026' },
-      { id: 't12', title: 'Schedule Q4 portfolio budget audit with external advisory', project: 'Clean Water Initiative', assignee: 'Anita Roy', role: 'Admin', status: 'in-progress', priority: 'High', dueDate: 'Oct 24, 2026' },
-    ];
+    //   { id: 't1', title: 'Commission solar filtration pump at Hamlet 4', project: 'Clean Water Initiative', assignee: 'Suresh Kumar', role: 'Coordinator', status: 'completed', priority: 'High', dueDate: 'Oct 14, 2026' },
+    //   { id: 't2', title: 'Deliver 15 STEM learning kits to Model Upper Primary School', project: 'Schools for all', assignee: 'Meena Solanki', role: 'Coordinator', status: 'completed', priority: 'Medium', dueDate: 'Oct 15, 2026' },
+    //   { id: 't3', title: 'Collect water quality test samples post-monsoon', project: 'Clean Water Initiative', assignee: 'Anita Roy', role: 'Project Manager', status: 'completed', priority: 'High', dueDate: 'Oct 15, 2026' },
+    //   { id: 't4', title: 'Publish Phase 1 telemedicine diagnostic report', project: 'Mobile Health Clinic', assignee: 'Dr. Kavita Rao', role: 'Project Manager', status: 'completed', priority: 'Medium', dueDate: 'Oct 16, 2026' },
+    //   { id: 't5', title: 'Distribute sanitary napkin hygiene kits in Zone 2', project: 'Mobile Health Clinic', assignee: 'Pooja Patil', role: 'Coordinator', status: 'completed', priority: 'Normal', dueDate: 'Oct 16, 2026' },
+    //   { id: 't6', title: 'Conduct community water management audit', project: 'Clean Water Initiative', assignee: 'Suresh Kumar', role: 'Coordinator', status: 'completed', priority: 'Normal', dueDate: 'Oct 16, 2026' },
+    //   { id: 't7', title: 'Inspect pipeline laying in Jaisalmer cluster 3', project: 'Clean Water Initiative', assignee: 'Anita Roy', role: 'Project Manager', status: 'in-progress', priority: 'High', dueDate: 'Oct 18, 2026' },
+    //   { id: 't8', title: 'Conduct parent-teacher digital awareness session', project: 'Schools for all', assignee: 'Rahul Verma', role: 'Project Manager', status: 'in-progress', priority: 'Medium', dueDate: 'Oct 19, 2026' },
+    //   { id: 't9', title: 'Upload geo-tagged photographs of borewell construction', project: 'Clean Water Initiative', assignee: 'Suresh Kumar', role: 'Coordinator', status: 'in-progress', priority: 'High', dueDate: 'Oct 20, 2026' },
+    //   { id: 't10', title: 'Verify vendor invoice for smartboard hardware', project: 'Schools for all', assignee: 'Rahul Verma', role: 'Project Manager', status: 'review', priority: 'Medium', dueDate: 'Oct 21, 2026' },
+    //   { id: 't11', title: 'Submit monthly field fuel vouchers & muster roll', project: 'Mobile Health Clinic', assignee: 'Pooja Patil', role: 'Coordinator', status: 'review', priority: 'Normal', dueDate: 'Oct 22, 2026' },
+    //   { id: 't12', title: 'Schedule Q4 portfolio budget audit with external advisory', project: 'Clean Water Initiative', assignee: 'Anita Roy', role: 'Admin', status: 'in-progress', priority: 'High', dueDate: 'Oct 24, 2026' },
+    //
+     ];
 
     const initialFieldUpdates = [
       { id: 'fu1', author: 'Suresh Kumar', role: 'Coordinator', location: 'Barmer Block 2', timestamp: 'Today, 04:30 PM', text: 'Borewell yield verified at 42 LPM. Clean water sample stored for lab testing.', badge: 'Water Lab Verified' },
@@ -313,33 +314,7 @@
                     </form>
                   </div>
 
-                  {/* 1-Click Demo Login */}
-                  <div className="mt-8 pt-6 border-t border-[#E5DDD3]/70">
-                    <p className="text-xs text-[#6B625A] uppercase tracking-wider mb-2 font-semibold">Instant Demonstration Sign In:</p>
-                    <div className="grid grid-cols-3 gap-2">
-                      <button 
-                        type="button" 
-                        onClick={() => { setRole('admin'); setScreen('dashboard'); triggerToast('Signed in as Admin'); }} 
-                        className="px-2.5 py-1.5 text-xs rounded-lg border border-[#292524]/20 hover:border-[#292524] text-[#292524] font-medium bg-[#FFF9F2] hover:bg-white transition-all text-center cursor-pointer"
-                      >
-                        Admin
-                      </button>
-                      <button 
-                        type="button" 
-                        onClick={() => { setRole('pm'); setScreen('dashboard'); triggerToast('Signed in as Project Manager'); }} 
-                        className="px-2.5 py-1.5 text-xs rounded-lg border border-[#F47B20]/40 hover:border-[#F47B20] text-[#F47B20] font-medium bg-[#FFF9F2] hover:bg-white transition-all text-center cursor-pointer"
-                      >
-                        Project Manager
-                      </button>
-                      <button 
-                        type="button" 
-                        onClick={() => { setRole('coordinator'); setScreen('dashboard'); triggerToast('Signed in as Coordinator'); }} 
-                        className="px-2.5 py-1.5 text-xs rounded-lg border border-[#F9B233]/70 hover:border-[#F9B233] text-[#292524] font-medium bg-[#FFF9F2] hover:bg-white transition-all text-center cursor-pointer"
-                      >
-                        Coordinator
-                      </button>
-                    </div>
-                  </div>
+                 
                 </section>
 
                 {/* Right Panel (Golden 40% Accent #F9B233) */}
@@ -356,20 +331,6 @@
                     </p>
                   </div>
 
-                  <div className="my-8 space-y-4 text-xs font-medium text-white/90">
-                    <div className="flex items-start gap-3">
-                      <span className="p-1 rounded-full bg-white/25 mt-0.5"><Icons.Check /></span>
-                      <span>100% Audit-ready tracking for village water, school, and mobile clinics</span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <span className="p-1 rounded-full bg-white/25 mt-0.5"><Icons.Check /></span>
-                      <span>Instant role switching between Administrator, PM, and Field Coordinator</span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <span className="p-1 rounded-full bg-white/25 mt-0.5"><Icons.Check /></span>
-                      <span>Offline-ready field update submission and live checklist metrics</span>
-                    </div>
-                  </div>
 
                   <div className="flex items-center justify-between pt-4 border-t border-white/20">
                     <span className="text-xs text-white/80">NGO Suite v2.4</span>
@@ -378,7 +339,6 @@
                       onClick={() => setScreen('role-select')} 
                       className="text-sm font-medium text-white hover:text-[#292524] transition-colors flex items-center gap-1.5 focus:outline-none cursor-pointer"
                     >
-                      <span>Proceed</span>
                       <Icons.ChevronRight />
                     </button>
                   </div>
@@ -658,6 +618,7 @@
                             <span>{roleConfigs[role].quickActionText}</span>
                           </button>
                         </div>
+                      
 
                         {/* Requirement 4: Real-time Metrics KPI Stat Cards */}
                         <section aria-label="Key Performance Indicators" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -698,206 +659,169 @@
                             </div>
                           </article>
 
-                          {/* Card 3: Portfolio Budget */}
-                          <article className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                            <div className="flex items-center justify-between mb-4">
-                              <h3 className="text-sm font-heading font-medium text-[#6B625A]">
-                                {role === 'admin' ? 'Portfolio Budget' : role === 'pm' ? 'Allocated Budget' : 'Field Disbursal'}
-                              </h3>
-                              <span className="w-10 h-10 rounded-xl bg-[#FFF9F2] text-[#292524] flex items-center justify-center group-hover:scale-105 transition-transform">
-                                <Icons.IndianRupee />
-                              </span>
-                            </div>
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-3xl sm:text-4xl font-bold font-body text-[#292524]">{budgetDisplay}</span>
-                              <span className="text-xs font-semibold text-[#292524] uppercase tracking-wider">INR Allocated</span>
-                            </div>
-                            <div className="mt-3 pt-3 border-t border-[#E5DDD3]/50 flex items-center justify-between text-xs text-[#6B625A]">
-                              <span>61.6% utilization</span>
-                              <button onClick={() => setTab('analytics')} className="hover:text-[#F47B20] font-medium cursor-pointer">Breakdown &rarr;</button>
-                            </div>
-                          </article>
-
-                          {/* Card 4: People Reached */}
-                          <article className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                            <div className="flex items-center justify-between mb-4">
-                              <h3 className="text-sm font-heading font-medium text-[#6B625A]">People Reached</h3>
-                              <span className="w-10 h-10 rounded-xl bg-[#FFF9F2] text-[#F47B20] flex items-center justify-center group-hover:scale-105 transition-transform">
-                                <Icons.Users />
-                              </span>
-                            </div>
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-3xl sm:text-4xl font-bold font-body text-[#292524]">{reachDisplay}</span>
-                              <span className="text-xs font-semibold text-[#F47B20] uppercase tracking-wider">Direct Reach</span>
-                            </div>
-                            <div className="mt-3 pt-3 border-t border-[#E5DDD3]/50 flex items-center justify-between text-xs text-[#6B625A]">
-                              <span>Verified field audits</span>
-                              <button onClick={() => setTab('reports')} className="hover:text-[#F47B20] font-medium cursor-pointer">Audit logs &rarr;</button>
-                            </div>
-                          </article>
-
                         </section>
+                      </main>
 
-                        {/* Project Pulse Section with Clickable Progress Bars */}
-                        <section className="bg-[#FFF9F2]/70 rounded-2xl p-6 sm:p-8 border border-[#E5DDD3]">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
-                            <div>
-                              <h2 className="text-2xl font-heading font-semibold text-[#292524]">Project Pulse</h2>
-                              <p className="text-sm text-[#6B625A]">Current delivery metric & milestones. Click on any bar or '+ Advance' to update delivery live!</p>
-                            </div>
-                            <span className="text-xs text-[#6B625A] flex items-center gap-1.5 self-start sm:self-center">
-                              <span className="w-2 h-2 rounded-full bg-[#F47B20] animate-pulse"></span>
-                              Interactive real-time updates
-                            </span>
-                          </div>
+                        {/* Project Pulse Section with Clickable Progress Bars *}
+                        // <section className="bg-[#FFF9F2]/70 rounded-2xl p-6 sm:p-8 border border-[#E5DDD3]">
+                        //   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                        //     <div>
+                        //       <h2 className="text-2xl font-heading font-semibold text-[#292524]">Project Pulse</h2>
+                        //       <p className="text-sm text-[#6B625A]">Current delivery metric & milestones. Click on any bar or '+ Advance' to update delivery live!</p>
+                        //     </div>
+                        //     <span className="text-xs text-[#6B625A] flex items-center gap-1.5 self-start sm:self-center">
+                        //       <span className="w-2 h-2 rounded-full bg-[#F47B20] animate-pulse"></span>
+                        //       Interactive real-time updates
+                        //     </span>
+                        //   </div>
 
-                          <div className="space-y-6">
-                            {projects.map((p) => (
-                              <div key={p.id} className="bg-white p-5 rounded-xl border border-[#E5DDD3] shadow-sm hover:shadow-md transition-all">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                                  <div>
-                                    <div className="flex items-center gap-2">
-                                      <h3 className="text-base font-semibold font-heading text-[#292524]">{p.title}</h3>
-                                      <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${p.status === 'Completed' ? 'bg-[#292524] text-white' : 'bg-[#FFF9F2] text-[#F47B20] border border-[#F47B20]/30'}`}>
-                                        {p.category}
-                                      </span>
-                                      {p.progress === 100 && (
-                                        <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-[#F47B20] text-white">
-                                          100% Completed
-                                        </span>
-                                      )}
-                                    </div>
-                                    <p className="text-xs text-[#6B625A] mt-0.5 flex items-center gap-2">
-                                      <span className="flex items-center gap-1"><Icons.MapPin /> {p.location}</span>
-                                      <span>•</span>
-                                      <span>Lead: {p.lead}</span>
-                                    </p>
-                                  </div>
-                                  <div className="text-right flex sm:flex-col items-center sm:items-end justify-between gap-1">
-                                    <div className="flex items-center gap-2">
-                                      <button 
-                                        type="button" 
-                                        onClick={() => handleUpdateProjectProgress(p.id, p.progress >= 100 ? 30 : Math.min(100, p.progress + 15))}
-                                        className="px-2 py-0.5 text-[11px] font-semibold rounded bg-[#FFF9F2] hover:bg-[#F47B20] hover:text-white text-[#F47B20] border border-[#F47B20]/40 transition-colors cursor-pointer"
-                                        title="Click to advance delivery progress"
-                                      >
-                                        + Advance
-                                      </button>
-                                      <span className={`text-sm font-bold ${p.progress === 100 ? 'text-[#F47B20]' : 'text-[#292524]'}`}>{p.progress}%</span>
-                                    </div>
-                                    <span className="text-xs text-[#6B625A]">Spent: {p.spent} / {p.budget}</span>
-                                  </div>
-                                </div>
+                        //   <div className="space-y-6">
+                        //     {projects.map((p) => (
+                        //       <div key={p.id} className="bg-white p-5 rounded-xl border border-[#E5DDD3] shadow-sm hover:shadow-md transition-all">
+                        //         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                        //           <div>
+                        //             <div className="flex items-center gap-2">
+                        //               <h3 className="text-base font-semibold font-heading text-[#292524]">{p.title}</h3>
+                        //               <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${p.status === 'Completed' ? 'bg-[#292524] text-white' : 'bg-[#FFF9F2] text-[#F47B20] border border-[#F47B20]/30'}`}>
+                        //                 {p.category}
+                        //               </span>
+                        //               {p.progress === 100 && (
+                        //                 <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-[#F47B20] text-white">
+                        //                   100% Completed
+                        //                 </span>
+                        //               )}
+                        //             </div>
+                        //             <p className="text-xs text-[#6B625A] mt-0.5 flex items-center gap-2">
+                        //               <span className="flex items-center gap-1"><Icons.MapPin /> {p.location}</span>
+                        //               <span>•</span>
+                        //               <span>Lead: {p.lead}</span>
+                        //             </p>
+                        //           </div>
+                        //           <div className="text-right flex sm:flex-col items-center sm:items-end justify-between gap-1">
+                        //             <div className="flex items-center gap-2">
+                        //               <button 
+                        //                 type="button" 
+                        //                 onClick={() => handleUpdateProjectProgress(p.id, p.progress >= 100 ? 30 : Math.min(100, p.progress + 15))}
+                        //                 className="px-2 py-0.5 text-[11px] font-semibold rounded bg-[#FFF9F2] hover:bg-[#F47B20] hover:text-white text-[#F47B20] border border-[#F47B20]/40 transition-colors cursor-pointer"
+                        //                 title="Click to advance delivery progress"
+                        //               >
+                        //                 + Advance
+                        //               </button>
+                        //               <span className={`text-sm font-bold ${p.progress === 100 ? 'text-[#F47B20]' : 'text-[#292524]'}`}>{p.progress}%</span>
+                        //             </div>
+                        //             <span className="text-xs text-[#6B625A]">Spent: {p.spent} / {p.budget}</span>
+                        //           </div>
+                        //         </div>
 
-                                {/* Clickable Progress Bar */}
-                                <div 
-                                  onClick={(e) => {
-                                    const rect = e.currentTarget.getBoundingClientRect();
-                                    const percent = Math.round(((e.clientX - rect.left) / rect.width) * 100);
-                                    handleUpdateProjectProgress(p.id, Math.max(10, Math.min(100, percent)));
-                                  }}
-                                  className="w-full bg-[#FFF9F2] h-4 rounded-full overflow-hidden border border-[#E5DDD3]/80 p-0.5 cursor-pointer relative group"
-                                  title="Click anywhere to update project delivery progress"
-                                >
-                                  <div 
-                                    className="h-full rounded-full transition-all duration-300 ease-out" 
-                                    style={{ width: `${p.progress}%`, backgroundColor: p.progressColor }}
-                                    role="progressbar"
-                                    aria-valuenow={p.progress}
-                                  />
-                                </div>
-                                <div className="mt-2.5 flex items-center justify-between text-xs text-[#6B625A]">
-                                  <span>Next Milestone: {p.nextMilestone}</span>
-                                  <span className="text-[#292524] font-medium">{p.beneficiaries}</span>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </section>
+                        //         {/* Clickable Progress Bar */}
+                        //         <div 
+                        //           onClick={(e) => {
+                        //             const rect = e.currentTarget.getBoundingClientRect();
+                        //             const percent = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+                        //             handleUpdateProjectProgress(p.id, Math.max(10, Math.min(100, percent)));
+                        //           }}
+                        //           className="w-full bg-[#FFF9F2] h-4 rounded-full overflow-hidden border border-[#E5DDD3]/80 p-0.5 cursor-pointer relative group"
+                        //           title="Click anywhere to update project delivery progress"
+                        //         >
+                        //           <div 
+                        //             className="h-full rounded-full transition-all duration-300 ease-out" 
+                        //             style={{ width: `${p.progress}%`, backgroundColor: p.progressColor }}
+                        //             role="progressbar"
+                        //             aria-valuenow={p.progress}
+                        //           />
+                        //         </div>
+                        //         <div className="mt-2.5 flex items-center justify-between text-xs text-[#6B625A]">
+                        //           <span>Next Milestone: {p.nextMilestone}</span>
+                        //           <span className="text-[#292524] font-medium">{p.beneficiaries}</span>
+                        //         </div>
+                        //       </div>
+                        //     ))}
+                        //   </div>
+                        // </section>
 
-                        {/* Recent Field Updates Feed */}
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                          <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm">
-                            <div className="flex items-center justify-between mb-4">
-                              <div>
-                                <h3 className="text-lg font-heading font-semibold text-[#292524]">Recent Field Updates</h3>
-                                <p className="text-xs text-[#6B625A]">Real-time field coordinator submissions & photo logs</p>
-                              </div>
-                              <button 
-                                type="button" 
-                                onClick={() => setActiveModal('field-update')} 
-                                className="text-xs font-semibold text-[#F47B20] hover:underline cursor-pointer"
-                              >
-                                + Log Field Note
-                              </button>
-                            </div>
+                        // {/* Recent Field Updates Feed */}
+                        // <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        //   <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm">
+                        //     <div className="flex items-center justify-between mb-4">
+                        //       <div>
+                        //         <h3 className="text-lg font-heading font-semibold text-[#292524]">Recent Field Updates</h3>
+                        //         <p className="text-xs text-[#6B625A]">Real-time field coordinator submissions & photo logs</p>
+                        //       </div>
+                        //       <button 
+                        //         type="button" 
+                        //         onClick={() => setActiveModal('field-update')} 
+                        //         className="text-xs font-semibold text-[#F47B20] hover:underline cursor-pointer"
+                        //       >
+                        //         + Log Field Note
+                        //       </button>
+                        //     </div>
 
-                            <div className="space-y-3.5">
-                              {fieldUpdates.map(u => (
-                                <div key={u.id} className="p-3.5 rounded-xl bg-[#FFF9F2]/70 border border-[#E5DDD3]/70 hover:border-[#F9B233] transition-all">
-                                  <div className="flex items-center justify-between text-xs mb-1">
-                                    <div className="flex items-center gap-2">
-                                      <span className="font-semibold text-[#292524]">{u.author}</span>
-                                      <span className="px-1.5 py-0.5 rounded text-[10px] bg-white border border-[#E5DDD3] text-[#6B625A]">{u.role}</span>
-                                    </div>
-                                    <span className="text-[#6B625A]">{u.timestamp}</span>
-                                  </div>
-                                  <p className="text-xs text-[#292524] leading-relaxed mb-2">{u.text}</p>
-                                  <div className="flex items-center justify-between text-[11px] text-[#6B625A]">
-                                    <span className="flex items-center gap-1"><Icons.MapPin /> {u.location}</span>
-                                    <span className="px-2 py-0.5 rounded-full bg-white text-[#292524] font-medium border border-[#E5DDD3]">{u.badge}</span>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
+                        //     <div className="space-y-3.5">
+                        //       {fieldUpdates.map(u => (
+                        //         <div key={u.id} className="p-3.5 rounded-xl bg-[#FFF9F2]/70 border border-[#E5DDD3]/70 hover:border-[#F9B233] transition-all">
+                        //           <div className="flex items-center justify-between text-xs mb-1">
+                        //             <div className="flex items-center gap-2">
+                        //               <span className="font-semibold text-[#292524]">{u.author}</span>
+                        //               <span className="px-1.5 py-0.5 rounded text-[10px] bg-white border border-[#E5DDD3] text-[#6B625A]">{u.role}</span>
+                        //             </div>
+                        //             <span className="text-[#6B625A]">{u.timestamp}</span>
+                        //           </div>
+                        //           <p className="text-xs text-[#292524] leading-relaxed mb-2">{u.text}</p>
+                        //           <div className="flex items-center justify-between text-[11px] text-[#6B625A]">
+                        //             <span className="flex items-center gap-1"><Icons.MapPin /> {u.location}</span>
+                        //             <span className="px-2 py-0.5 rounded-full bg-white text-[#292524] font-medium border border-[#E5DDD3]">{u.badge}</span>
+                        //           </div>
+                        //         </div>
+                        //       ))}
+                        //     </div>
+                        //   </div>
 
-                          {/* Session Governance Card — Sign Out to switch workspace */}
-                          <div className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm flex flex-col justify-between">
-                            <div>
-                              <h3 className="text-lg font-heading font-semibold text-[#292524] mb-1">Session Governance</h3>
-                              <p className="text-xs text-[#6B625A] mb-4">Active session compliance & audit integrity</p>
+                        //   {/* Session Governance Card — Sign Out to switch workspace */}
+                        //   <div className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm flex flex-col justify-between">
+                        //     <div>
+                        //       <h3 className="text-lg font-heading font-semibold text-[#292524] mb-1">Session Governance</h3>
+                        //       <p className="text-xs text-[#6B625A] mb-4">Active session compliance & audit integrity</p>
                               
-                              <div className="p-3.5 rounded-xl bg-[#FFF9F2] border border-[#F9B233]/40 mb-4">
-                                <span className="text-[10px] uppercase font-bold text-[#F47B20] block mb-1">Session Scope</span>
-                                <p className="text-base font-heading font-semibold text-[#292524]">{roleConfigs[role].fullName}</p>
-                                <p className="text-xs text-[#6B625A] mt-1 leading-relaxed">{roleConfigs[role].description}</p>
-                              </div>
+                        //       <div className="p-3.5 rounded-xl bg-[#FFF9F2] border border-[#F9B233]/40 mb-4">
+                        //         <span className="text-[10px] uppercase font-bold text-[#F47B20] block mb-1">Session Scope</span>
+                        //         <p className="text-base font-heading font-semibold text-[#292524]">{roleConfigs[role].fullName}</p>
+                        //         <p className="text-xs text-[#6B625A] mt-1 leading-relaxed">{roleConfigs[role].description}</p>
+                        //       </div>
 
-                              <ul className="text-xs space-y-2 text-[#6B625A]">
-                                <li className="flex items-center gap-2">
-                                  <span className="text-[#F47B20]"><Icons.Check /></span>
-                                  <span>100% Audit logging active</span>
-                                </li>
-                                <li className="flex items-center gap-2">
-                                  <span className="text-[#F47B20]"><Icons.Check /></span>
-                                  <span>Strict WCAG 2.1 AA compliance</span>
-                                </li>
-                                <li className="flex items-center gap-2">
-                                  <span className="text-[#F47B20]"><Icons.Check /></span>
-                                  <span>Zero brand logo policy enforced</span>
-                                </li>
-                              </ul>
-                            </div>
+                        //       <ul className="text-xs space-y-2 text-[#6B625A]">
+                        //         <li className="flex items-center gap-2">
+                        //           <span className="text-[#F47B20]"><Icons.Check /></span>
+                        //           <span>100% Audit logging active</span>
+                        //         </li>
+                        //         <li className="flex items-center gap-2">
+                        //           <span className="text-[#F47B20]"><Icons.Check /></span>
+                        //           <span>Strict WCAG 2.1 AA compliance</span>
+                        //         </li>
+                        //         <li className="flex items-center gap-2">
+                        //           <span className="text-[#F47B20]"><Icons.Check /></span>
+                        //           <span>Zero brand logo policy enforced</span>
+                        //         </li>
+                        //       </ul>
+                        //     </div>
 
-                            <div className="pt-4 border-t border-[#E5DDD3]/70 mt-4 flex items-center justify-between text-xs text-[#6B625A]">
-                              <span>To switch workspace:</span>
-                              <button 
-                                type="button" 
-                                onClick={handleSignOut}
-                                className="text-[#F47B20] hover:underline font-semibold cursor-pointer"
-                              >
-                                Sign Out &rarr;
-                              </button>
-                            </div>
-                          </div>
-                        </div>
+                        //     <div className="pt-4 border-t border-[#E5DDD3]/70 mt-4 flex items-center justify-between text-xs text-[#6B625A]">
+                        //       <span>To switch workspace:</span>
+                        //       <button 
+                        //         type="button" 
+                        //         onClick={handleSignOut}
+                        //         className="text-[#F47B20] hover:underline font-semibold cursor-pointer"
+                        //       >
+                        //         Sign Out &rarr;
+                        //       </button>
+                        //     </div>
+                        //   </div>
+                        // </div>
 
-                      </div>
-                    )}
-
+                      //</div>
+                    //)}
+                          
                     {/* ---------------- Tab 2: Projects ---------------- */}
-                    {tab === 'projects' && (
+                    {...tab === 'projects' && (
                       <div className="space-y-6 animate-fade-in">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5DDD3]/70">
                           <div>
@@ -961,7 +885,7 @@
                     )}
 
                     {/* ---------------- Tab 3: Tasks ---------------- */}
-                    {tab === 'tasks' && (
+                    { tab === 'tasks' && (
                       <div className="space-y-6 animate-fade-in">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5DDD3]/70">
                           <div>
@@ -1141,7 +1065,7 @@
 
                   </main>
 
-                </div>
+                
 
                 {/* Minimal Bottom Footer: Non-intrusive role label bottom-left */}
                 <footer className="w-full px-6 sm:px-8 py-3 border-t border-[#E5DDD3]/60 bg-white flex items-center justify-between text-xs text-[#6B625A]">
@@ -1150,7 +1074,6 @@
                   </span>
                   <span className="text-[11px] text-[#6B625A]/60">NGO Project Management Platform • Field & Portfolio</span>
                 </footer>
-
               </div>
             </div>
           )}
