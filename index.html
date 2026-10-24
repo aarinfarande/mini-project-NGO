@@ -1,1250 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NGO Project Management Platform | Field & Portfolio Workspace</title>
-  <meta name="description" content="A fully responsive, accessible, and high-performance front-end platform for NGO project management, field operations, and real-time community reach metrics.">
-  
-  <!-- Google Fonts: Gelasio & Inter -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NGO Project Management Platform</title>
+  <meta name="description" content="NGO project management, field operations, and community impact dashboard." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS CDN -->
+  <link href="https://fonts.googleapis.com/css2?family=Gelasio:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            saffron: '#F47B20',
-            golden: '#F9B233',
-            charcoal: '#292524',
-            cream: '#FFF9F2',
-            white: '#FFFFFF',
-            muted: '#6B625A',
-          },
-          fontFamily: {
-            heading: ['Gelasio', 'Georgia', 'serif'],
-            body: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-          }
-        }
-      }
-    };
+    tailwind.config = { theme: { extend: { fontFamily: { heading: ['Gelasio','Georgia','serif'], body: ['Inter','sans-serif'] } } } };
   </script>
-
-  <!-- React 18 Engine & Babel Standalone -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <!-- Core Design System CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root { color-scheme: light; }
+    body { font-family: Inter, sans-serif; background:#FFF9F2; color:#292524; }
+    .heading { font-family: Gelasio, Georgia, serif; }
+    .fade { animation: fade .18s ease-out; }
+    @keyframes fade { from { opacity:0; transform:translateY(4px) } to { opacity:1; transform:translateY(0) } }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline:3px solid #F9B233; outline-offset:2px; }
+  </style>
 </head>
-<body class="bg-[#FFF9F2] text-[#292524] min-h-screen font-body antialiased selection:bg-[#F9B233] selection:text-[#292524]">
-
-  <!-- React Mount Node -->
-  <div id="app">
-    <!-- Initial Loading Placeholder (replaced instantly on React mount) -->
-    <div class="min-h-screen bg-[#FFF9F2] flex items-center justify-center p-4">
-      <div class="w-12 h-12 rounded-full border-4 border-[#F47B20] border-t-transparent animate-spin"></div>
-    </div>
-  </div>
-
+<body class="min-h-screen">
+  <div id="root"><div class="min-h-screen flex items-center justify-center">Loading NGO Workspace…</div></div>
   <script type="text/babel">
-    const { useState, useMemo } = React;
-
-    // SVG Icons
-    const Icons = {
-      ChevronRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>,
-      ArrowLeft: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>,
-      Check: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
-      Shield: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>,
-      FolderKanban: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/><path d="M8 10v4"/><path d="M12 10v2"/><path d="M16 10v6"/></svg>,
-      ListTodo: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="6" height="6" rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>,
-      LayoutGrid: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>,
-      TrendingUp: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
-      FileText: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>,
-      Folder: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>,
-      ListChecks: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>,
-      IndianRupee: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3h12"/><path d="M6 8h12"/><path d="m6 13 8.5 8"/><path d="M6 13h3"/><path d="M9 13c6.667 0 6.667-10 0-10"/></svg>,
-      Users: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-      Plus: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>,
-      MapPin: () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>,
-      Clock: () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Close: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
-      LogOut: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-    };
-
-    const initialProjects = [
-      {
-        id: 'p1',
-        title: 'Clean Water Initiative',
-        category: 'Water & Sanitation',
-        location: 'Barmer & Jaisalmer, Rajasthan',
-        progress: 65,
-        progressColor: '#F47B20',
-        budget: '₹360k',
-        spent: '₹234k',
-        lead: 'Anita Roy',
-        beneficiaries: '6,200 villagers',
-        status: 'Active',
-        nextMilestone: 'Commission solar filtration pump in Hamlet 4',
-        description: 'Borewell drilling, solar filtration installation, and village water user committee training.'
-      },
-      {
-        id: 'p2',
-        title: 'Schools for all',
-        category: 'Primary Education',
-        location: 'Dhar & Jhabua, Madhya Pradesh',
-        progress: 40,
-        progressColor: '#F9B233',
-        budget: '₹480k',
-        spent: '₹192k',
-        lead: 'Rahul Verma',
-        beneficiaries: '4,800 students',
-        status: 'Active',
-        nextMilestone: 'Deliver smartboard kits to Model Upper Primary School',
-        description: 'Digital classroom smartboards, STEM laboratory kits, and supplementary teacher pedagogical training.'
-      },
-      {
-        id: 'p3',
-        title: 'Mobile Health Clinic',
-        category: 'Healthcare Access',
-        location: 'Gadchiroli & Nandurbar, Maharashtra',
-        progress: 100,
-        progressColor: '#F47B20',
-        budget: '₹240k',
-        spent: '₹240k',
-        lead: 'Dr. Kavita Rao',
-        beneficiaries: '7,400 patients',
-        status: 'Completed',
-        nextMilestone: 'Handover complete to district healthcare office',
-        description: 'Phase 1 telemedicine van deployment, seasonal maternal healthcare camps, and diagnostic screenings.'
-      }
+    const {useState, useMemo, useEffect} = React;
+    const projectsSeed = [
+      {id:'p1',title:'Clean Water Initiative',category:'Water & Sanitation',location:'Barmer & Jaisalmer, Rajasthan',progress:65,budget:360000,spent:234000,lead:'Anita Roy',beneficiaries:'6,200 villagers',status:'Active',nextMilestone:'Commission solar filtration pump in Hamlet 4',description:'Borewell drilling, solar filtration installation, and village water user committee training.'},
+      {id:'p2',title:'Schools for All',category:'Primary Education',location:'Dhar & Jhabua, Madhya Pradesh',progress:40,budget:480000,spent:192000,lead:'Rahul Verma',beneficiaries:'4,800 students',status:'Active',nextMilestone:'Deliver smartboard kits to Model Upper Primary School',description:'Digital classroom smartboards, STEM laboratory kits, and teacher training.'},
+      {id:'p3',title:'Mobile Health Clinic',category:'Healthcare Access',location:'Gadchiroli & Nandurbar, Maharashtra',progress:100,budget:240000,spent:240000,lead:'Dr. Kavita Rao',beneficiaries:'7,400 patients',status:'Completed',nextMilestone:'Handover complete to district healthcare office',description:'Telemedicine van deployment, maternal healthcare camps, and diagnostic screenings.'}
     ];
-
-    const initialTasks = [
-    //   { id: 't1', title: 'Commission solar filtration pump at Hamlet 4', project: 'Clean Water Initiative', assignee: 'Suresh Kumar', role: 'Coordinator', status: 'completed', priority: 'High', dueDate: 'Oct 14, 2026' },
-    //   { id: 't2', title: 'Deliver 15 STEM learning kits to Model Upper Primary School', project: 'Schools for all', assignee: 'Meena Solanki', role: 'Coordinator', status: 'completed', priority: 'Medium', dueDate: 'Oct 15, 2026' },
-    //   { id: 't3', title: 'Collect water quality test samples post-monsoon', project: 'Clean Water Initiative', assignee: 'Anita Roy', role: 'Project Manager', status: 'completed', priority: 'High', dueDate: 'Oct 15, 2026' },
-    //   { id: 't4', title: 'Publish Phase 1 telemedicine diagnostic report', project: 'Mobile Health Clinic', assignee: 'Dr. Kavita Rao', role: 'Project Manager', status: 'completed', priority: 'Medium', dueDate: 'Oct 16, 2026' },
-    //   { id: 't5', title: 'Distribute sanitary napkin hygiene kits in Zone 2', project: 'Mobile Health Clinic', assignee: 'Pooja Patil', role: 'Coordinator', status: 'completed', priority: 'Normal', dueDate: 'Oct 16, 2026' },
-    //   { id: 't6', title: 'Conduct community water management audit', project: 'Clean Water Initiative', assignee: 'Suresh Kumar', role: 'Coordinator', status: 'completed', priority: 'Normal', dueDate: 'Oct 16, 2026' },
-    //   { id: 't7', title: 'Inspect pipeline laying in Jaisalmer cluster 3', project: 'Clean Water Initiative', assignee: 'Anita Roy', role: 'Project Manager', status: 'in-progress', priority: 'High', dueDate: 'Oct 18, 2026' },
-    //   { id: 't8', title: 'Conduct parent-teacher digital awareness session', project: 'Schools for all', assignee: 'Rahul Verma', role: 'Project Manager', status: 'in-progress', priority: 'Medium', dueDate: 'Oct 19, 2026' },
-    //   { id: 't9', title: 'Upload geo-tagged photographs of borewell construction', project: 'Clean Water Initiative', assignee: 'Suresh Kumar', role: 'Coordinator', status: 'in-progress', priority: 'High', dueDate: 'Oct 20, 2026' },
-    //   { id: 't10', title: 'Verify vendor invoice for smartboard hardware', project: 'Schools for all', assignee: 'Rahul Verma', role: 'Project Manager', status: 'review', priority: 'Medium', dueDate: 'Oct 21, 2026' },
-    //   { id: 't11', title: 'Submit monthly field fuel vouchers & muster roll', project: 'Mobile Health Clinic', assignee: 'Pooja Patil', role: 'Coordinator', status: 'review', priority: 'Normal', dueDate: 'Oct 22, 2026' },
-    //   { id: 't12', title: 'Schedule Q4 portfolio budget audit with external advisory', project: 'Clean Water Initiative', assignee: 'Anita Roy', role: 'Admin', status: 'in-progress', priority: 'High', dueDate: 'Oct 24, 2026' },
-    //
-     ];
-
-    const initialFieldUpdates = [
-      { id: 'fu1', author: 'Suresh Kumar', role: 'Coordinator', location: 'Barmer Block 2', timestamp: 'Today, 04:30 PM', text: 'Borewell yield verified at 42 LPM. Clean water sample stored for lab testing.', badge: 'Water Lab Verified' },
-      { id: 'fu2', author: 'Meena Solanki', role: 'Coordinator', location: 'Dhar Primary School', timestamp: 'Today, 02:15 PM', text: 'Students completed first interactive science module on solar energy.', badge: '48 Beneficiaries' },
-      { id: 'fu3', author: 'Dr. Kavita Rao', role: 'Project Manager', location: 'Gadchiroli Tribal Camp', timestamp: 'Yesterday, 06:10 PM', text: 'Telemedicine link established. 112 villagers screened for early hypertension.', badge: 'Health Outreach' }
+    const tasksSeed = [
+      {id:'t1',title:'Inspect pipeline laying in Jaisalmer cluster 3',project:'Clean Water Initiative',assignee:'Anita Roy',role:'Project Manager',status:'in-progress',priority:'High',dueDate:'Oct 24, 2026'},
+      {id:'t2',title:'Conduct parent-teacher digital awareness session',project:'Schools for All',assignee:'Rahul Verma',role:'Project Manager',status:'in-progress',priority:'Medium',dueDate:'Oct 25, 2026'},
+      {id:'t3',title:'Verify vendor invoice for smartboard hardware',project:'Schools for All',assignee:'Meena Solanki',role:'Coordinator',status:'review',priority:'Medium',dueDate:'Oct 26, 2026'},
+      {id:'t4',title:'Publish Phase 1 telemedicine diagnostic report',project:'Mobile Health Clinic',assignee:'Dr. Kavita Rao',role:'Project Manager',status:'completed',priority:'Normal',dueDate:'Oct 20, 2026'}
     ];
-
-    const roleConfigs = {
-      admin: {
-        label: 'ADMIN',
-        fullName: 'Administrator',
-        subtitle: 'Executive Portfolio Oversight & Governance',
-        badgeClass: 'bg-[#292524] text-[#FFF9F2] border border-[#F9B233]/40',
-        quickActionText: '+ New Project',
-        description: 'Full overview of portfolio budget, all project pulse indicators, global metrics & governance.'
-      },
-      pm: {
-        label: 'PROJECT MANAGER',
-        fullName: 'Project Manager',
-        subtitle: 'Assigned Project Execution & Resource Allocation',
-        badgeClass: 'bg-[#F47B20] text-white',
-        quickActionText: '+ Assign Task',
-        description: 'Manage assigned projects, budget tracking for specific projects, task creation/assignment.'
-      },
-      coordinator: {
-        label: 'COORDINATOR',
-        fullName: 'Project Coordinator',
-        subtitle: 'Field Activity Tracking & Milestone Validation',
-        badgeClass: 'bg-[#F9B233] text-[#292524]',
-        quickActionText: 'Submit Field Update',
-        description: 'Focused task management view, field updates submission, task completion status.'
-      }
+    const fieldSeed = [
+      {id:'f1',author:'Suresh Kumar',role:'Coordinator',location:'Barmer Block 2',timestamp:'Today, 04:30 PM',text:'Borewell yield verified at 42 LPM. Clean water sample stored for lab testing.',badge:'Water Lab Verified'},
+      {id:'f2',author:'Meena Solanki',role:'Coordinator',location:'Dhar Primary School',timestamp:'Today, 02:15 PM',text:'Students completed the first interactive science module on solar energy.',badge:'48 Beneficiaries'}
+    ];
+    const roleInfo = {
+      admin:{name:'Administrator',subtitle:'Executive portfolio oversight and governance',action:'+ New Task'},
+      pm:{name:'Project Manager',subtitle:'Assigned project execution and resource allocation',action:'+ Assign Task'},
+      coordinator:{name:'Project Coordinator',subtitle:'Field activity tracking and milestone validation',action:'Submit Field Update'}
     };
-
-    function MainApp() {
-      // 1. Screen state: 'login' | 'role-select' | 'dashboard'
-      const [screen, setScreen] = useState('login');
-      // 2. Role state: 'admin' | 'pm' | 'coordinator' (locked once workspace selected)
-      const [role, setRole] = useState('admin');
-      // 3. Tab state: 'dashboard' | 'projects' | 'tasks' | 'analytics' | 'reports'
-      const handleSignOut = () => { setScreen('login'); setRole('admin'); setTab('dashboard'); };
-      const [tab, setTab] = useState('dashboard');
-      const [taskFilter, setTaskFilter] = useState('all');
-      const [projects, setProjects] = useState(initialProjects);
-      const [tasks, setTasks] = useState(initialTasks);
-      const [fieldUpdates, setFieldUpdates] = useState(initialFieldUpdates);
-      const [activeModal, setActiveModal] = useState(null);
-      const [toast, setToast] = useState(null);
-
-      const triggerToast = (msg) => {
-        setToast(msg);
-        setTimeout(() => setToast(null), 3000);
-      };
-
-      // 4. Real-time Metric Handlers
-      // Check/uncheck tasks
-      const handleToggleTask = (taskId) => {
-        setTasks(prev => prev.map(t => {
-          if (t.id === taskId) {
-            const nextStatus = t.status === 'completed' ? 'in-progress' : 'completed';
-            triggerToast(nextStatus === 'completed' ? 'Milestone marked completed' : 'Task reopened');
-            return { ...t, status: nextStatus };
-          }
-          return t;
-        }));
-      };
-
-      // Real-time project progress bar adjustment
-      const handleUpdateProjectProgress = (projectId, newProgress) => {
-        setProjects(prev => prev.map(p => {
-          if (p.id === projectId) {
-            const clamped = Math.max(0, Math.min(100, newProgress));
-            const isCompleted = clamped === 100;
-            triggerToast(`${p.title} delivery updated to ${clamped}%`);
-            return {
-              ...p,
-              progress: clamped,
-              status: isCompleted ? 'Completed' : 'Active'
-            };
-          }
-          return p;
-        }));
-      };
-
-      // Dynamic KPI Metrics
-      const completedTasksCount = useMemo(() => tasks.filter(t => t.status === 'completed').length, [tasks]);
-      const activeProjectsCount = useMemo(() => projects.filter(p => p.status === 'Active' || p.progress < 100).length, [projects]);
-
-      const roleActiveProjects = role === 'admin' 
-        ? activeProjectsCount 
-        : role === 'pm' 
-        ? projects.filter(p => p.id !== 'p3' && (p.status === 'Active' || p.progress < 100)).length 
-        : 1;
-
-      const roleTasksDisplay = role === 'admin'
-        ? `${completedTasksCount}/${tasks.length}`
-        : role === 'pm'
-        ? `${tasks.filter(t => t.project !== 'Mobile Health Clinic' && t.status === 'completed').length}/${tasks.filter(t => t.project !== 'Mobile Health Clinic').length}`
-        : `${tasks.filter(t => t.role === 'Coordinator' && t.status === 'completed').length}/${tasks.filter(t => t.role === 'Coordinator').length}`;
-
-      const budgetDisplay = role === 'admin' ? '₹1080k' : role === 'pm' ? '₹420k' : '₹85k';
-      const reachDisplay = role === 'admin' ? '18.4k' : role === 'pm' ? '8.2k' : '3.4k';
-
-      const filteredTasks = tasks.filter(t => taskFilter === 'all' ? true : t.status === taskFilter);
-
-      return (
-        <div className="min-h-screen bg-[#FFF9F2] text-[#292524] font-body relative">
-          
-          {/* ==================================================== */}
-          {/* 1. LOGIN SCREEN ('login')                            */}
-          {/* ==================================================== */}
-          {screen === 'login' && (
-            <div className="min-h-screen bg-[#FFF9F2] flex items-center justify-center p-3 sm:p-6 animate-fade-in">
-              <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl border border-[#F9B233]/40 overflow-hidden flex flex-col md:flex-row min-h-[640px]">
-                
-                {/* Left Panel (White 60%) */}
-                <section className="w-full md:w-[60%] bg-white p-8 sm:p-12 md:p-16 flex flex-col justify-between">
-                  <div>
-                    <div className="mb-8">
-                      <span className="text-xs uppercase tracking-widest text-[#6B625A] font-semibold">NGO Management Workspace</span>
-                      <h1 className="text-4xl sm:text-5xl font-semibold font-heading text-[#292524] mt-2 mb-2">Namaste</h1>
-                      <p className="text-sm text-[#6B625A]">Sign in with your organizational credentials to continue.</p>
-                    </div>
-
-                    <form 
-                      onSubmit={(e) => { e.preventDefault(); setScreen('role-select'); }} 
-                      className="space-y-5"
-                    >
-                      <div>
-                        <label className="block text-sm font-medium text-[#6B625A] mb-1.5">Login:</label>
-                        <input 
-                          type="text" 
-                          required 
-                          defaultValue="admin@grassroots.ngo"
-                          placeholder="name@organization.ngo or username" 
-                          className="w-full px-4 py-3 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524] text-sm focus:border-[#F47B20] focus:bg-white"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-[#6B625A] mb-1.5">Password:</label>
-                        <input 
-                          type="password" 
-                          required 
-                          defaultValue="••••••••••••"
-                          placeholder="Enter your security passkey" 
-                          className="w-full px-4 py-3 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524] text-sm focus:border-[#F47B20] focus:bg-white"
-                        />
-                      </div>
-
-                      <div className="flex items-center justify-between pt-1 text-sm">
-                        <button type="button" onClick={() => setActiveModal('help')} className="text-[#6B625A] hover:text-[#292524] hover:underline font-medium cursor-pointer">
-                          Help?
-                        </button>
-                        <button type="button" onClick={() => setActiveModal('forgot-pw')} className="text-[#6B625A] hover:text-[#292524] hover:underline font-medium cursor-pointer">
-                          Forgot Password?
-                        </button>
-                      </div>
-
-                      {/* Requirement 1: Working onSubmit/onClick to transition to 'role-select' */}
-                      <div className="pt-3">
-                        <button 
-                          type="submit" 
-                          id="loginSubmitBtn"
-                          onClick={() => setScreen('role-select')}
-                          className="w-full py-3.5 px-6 bg-[#F47B20] hover:bg-[#DE6C15] active:scale-[0.99] text-white font-medium rounded-xl shadow-md transition-all flex items-center justify-center gap-2 group cursor-pointer"
-                        >
-                          <span>Sign In</span>
-                          <span className="transition-transform group-hover:translate-x-1"><Icons.ChevronRight /></span>
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-
-                 
-                </section>
-
-                {/* Right Panel (Golden 40% Accent #F9B233) */}
-                <section className="w-full md:w-[40%] bg-[#F9B233] p-8 sm:p-12 flex flex-col justify-between text-white relative">
-                  <div className="space-y-3">
-                    <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold tracking-wider uppercase text-white">
-                      Field & Portfolio Engine
-                    </span>
-                    <h2 className="text-3xl font-heading text-white font-semibold leading-tight">
-                      Turn grassroot effort into measurable change.
-                    </h2>
-                    <p className="text-sm text-white/90 leading-relaxed font-body">
-                      A unified system linking village field workers, regional project leads, and executive oversight without administrative friction.
-                    </p>
-                  </div>
-
-
-                  <div className="flex items-center justify-between pt-4 border-t border-white/20">
-                    <span className="text-xs text-white/80">NGO Suite v2.4</span>
-                    <button 
-                      type="button" 
-                      onClick={() => setScreen('role-select')} 
-                      className="text-sm font-medium text-white hover:text-[#292524] transition-colors flex items-center gap-1.5 focus:outline-none cursor-pointer"
-                    >
-                      <Icons.ChevronRight />
-                    </button>
-                  </div>
-                </section>
-
-              </div>
-            </div>
-          )}
-
-          {/* ==================================================== */}
-          {/* 2. WORKSPACE / ROLE SELECTION SCREEN ('role-select') */}
-          {/* ==================================================== */}
-          {screen === 'role-select' && (
-            <div className="min-h-screen bg-[#FFF9F2] flex items-center justify-center p-3 sm:p-6 animate-fade-in">
-              <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl border border-[#F9B233]/40 overflow-hidden flex flex-col md:flex-row min-h-[640px]">
-                
-                {/* Left Panel (White 60%) */}
-                <section className="w-full md:w-[60%] bg-white p-8 sm:p-12 md:p-16 flex flex-col justify-between">
-                  <div>
-                    <span className="text-xs uppercase tracking-widest text-[#6B625A] font-semibold block mb-2">
-                      WELCOME BACK
-                    </span>
-
-                    <h1 className="text-3xl sm:text-4xl font-semibold font-heading text-[#292524] mb-1">
-                      Choose your workspace
-                    </h1>
-
-                    <p className="text-sm text-[#6B625A] mb-8 font-body">
-                      Select your profile to customize dashboard tools, permissions, and pulse metrics.
-                    </p>
-
-                    {/* Requirement 2: Working onClick handlers on Admin, PM, and Coordinator buttons */}
-                    <div className="space-y-4">
-                      
-                      {/* 1. Admin */}
-                      <button 
-                        type="button" 
-                        id="selectRoleAdmin"
-                        onClick={() => { setRole('admin'); setScreen('dashboard'); triggerToast('Workspace active: Administrator'); }}
-                        className={`w-full text-left p-5 rounded-2xl border-2 transition-all group relative cursor-pointer ${role === 'admin' ? 'border-[#F47B20] bg-[#FFF9F2]' : 'border-[#E5DDD3] hover:border-[#F47B20] hover:bg-[#FFF9F2]/60'}`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3.5">
-                            <span className="w-10 h-10 rounded-xl bg-[#292524] text-white flex items-center justify-center group-hover:bg-[#F47B20] transition-colors">
-                              <Icons.Shield />
-                            </span>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <h3 className="text-lg font-semibold text-[#292524] font-heading group-hover:text-[#F47B20] transition-colors">
-                                  Admin
-                                </h3>
-                                <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase bg-[#292524] text-white">Full Access</span>
-                              </div>
-                              <p className="text-xs text-[#6B625A] mt-0.5">
-                                Portfolio budget overview (₹1080k), all pulse indicators, global metrics & governance.
-                              </p>
-                            </div>
-                          </div>
-                          <span className="text-[#6B625A] group-hover:text-[#F47B20] group-hover:translate-x-1 transition-all">
-                            <Icons.ChevronRight />
-                          </span>
-                        </div>
-                      </button>
-
-                      {/* 2. Project Manager */}
-                      <button 
-                        type="button" 
-                        id="selectRolePM"
-                        onClick={() => { setRole('pm'); setScreen('dashboard'); triggerToast('Workspace active: Project Manager'); }}
-                        className={`w-full text-left p-5 rounded-2xl border-2 transition-all group relative cursor-pointer ${role === 'pm' ? 'border-[#F47B20] bg-[#FFF9F2]' : 'border-[#E5DDD3] hover:border-[#F47B20] hover:bg-[#FFF9F2]/60'}`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3.5">
-                            <span className="w-10 h-10 rounded-xl bg-[#F47B20] text-white flex items-center justify-center group-hover:bg-[#DE6C15] transition-colors">
-                              <Icons.FolderKanban />
-                            </span>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <h3 className="text-lg font-semibold text-[#292524] font-heading group-hover:text-[#F47B20] transition-colors">
-                                  Project Manager
-                                </h3>
-                                <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase bg-[#F47B20] text-white">Project Scope</span>
-                              </div>
-                              <p className="text-xs text-[#6B625A] mt-0.5">
-                                Manage assigned projects, budget tracking (₹420k), task creation & team assignments.
-                              </p>
-                            </div>
-                          </div>
-                          <span className="text-[#6B625A] group-hover:text-[#F47B20] group-hover:translate-x-1 transition-all">
-                            <Icons.ChevronRight />
-                          </span>
-                        </div>
-                      </button>
-
-                      {/* 3. Coordinator */}
-                      <button 
-                        type="button" 
-                        id="selectRoleCoord"
-                        onClick={() => { setRole('coordinator'); setScreen('dashboard'); triggerToast('Workspace active: Coordinator'); }}
-                        className={`w-full text-left p-5 rounded-2xl border-2 transition-all group relative cursor-pointer ${role === 'coordinator' ? 'border-[#F47B20] bg-[#FFF9F2]' : 'border-[#E5DDD3] hover:border-[#F47B20] hover:bg-[#FFF9F2]/60'}`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3.5">
-                            <span className="w-10 h-10 rounded-xl bg-[#F9B233] text-[#292524] flex items-center justify-center group-hover:bg-[#F47B20] group-hover:text-white transition-colors">
-                              <Icons.ListTodo />
-                            </span>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <h3 className="text-lg font-semibold text-[#292524] font-heading group-hover:text-[#F47B20] transition-colors">
-                                  Coordinator
-                                </h3>
-                                <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase bg-[#F9B233] text-[#292524]">Field Operations</span>
-                              </div>
-                              <p className="text-xs text-[#6B625A] mt-0.5">
-                                Focused task checklist, field updates submission, milestone completion & ground tracking.
-                              </p>
-                            </div>
-                          </div>
-                          <span className="text-[#6B625A] group-hover:text-[#F47B20] group-hover:translate-x-1 transition-all">
-                            <Icons.ChevronRight />
-                          </span>
-                        </div>
-                      </button>
-
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-6 border-t border-[#E5DDD3]/70 flex items-center justify-between text-xs text-[#6B625A]">
-                    <span>Need an access invite? Contact system administrator</span>
-                    <button 
-                      type="button" 
-                      onClick={() => setScreen('login')} 
-                      className="font-medium hover:text-[#292524] hover:underline flex items-center gap-1 cursor-pointer"
-                    >
-                      <Icons.ArrowLeft /> Back to Login
-                    </button>
-                  </div>
-                </section>
-
-                {/* Right Panel (Golden 40% Accent #F9B233) */}
-                <section className="w-full md:w-[40%] bg-[#F9B233] p-8 sm:p-12 flex flex-col justify-between text-white relative">
-                  <div>
-                    <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold tracking-wider uppercase text-white mb-6">
-                      Our Shared Mission
-                    </span>
-
-                    <h2 className="text-3xl sm:text-4xl font-heading text-white font-semibold leading-tight mb-4">
-                      "Make every effort count."
-                    </h2>
-
-                    <p className="text-base text-white/95 leading-relaxed font-body">
-                      A clear, shared workspace for the people turning good intentions into measurable change.
-                    </p>
-                  </div>
-
-                  <div className="pt-8 border-t border-white/25 flex items-center justify-between">
-                    <span className="text-xs text-white/80">Empowering 18,400+ Lives</span>
-                    <button 
-                      type="button" 
-                      onClick={() => setScreen('login')} 
-                      className="text-sm font-medium text-white hover:text-[#292524] transition-colors flex items-center gap-1.5 focus:outline-none cursor-pointer"
-                    >
-                      <span>Back</span>
-                      <Icons.ArrowLeft />
-                    </button>
-                  </div>
-                </section>
-
-              </div>
-            </div>
-          )}
-
-          {/* ==================================================== */}
-          {/* 3. DASHBOARD SCREEN ('dashboard')                    */}
-          {/* ==================================================== */}
-          {screen === 'dashboard' && (
-            <div className="outer-golden-frame animate-fade-in">
-              <div className="inner-white-viewport">
-                
-                {/* Clean Top Navigation Bar — ONLY Dashboard, Projects, Tasks */}
-                <header className="w-full border-b border-[#E5DDD3]/70 bg-white sticky top-0 z-30 px-4 sm:px-8 py-3.5 flex items-center justify-between">
-
-                  {/* Left Title (Strict: NO brand logos) */}
-                  <div className="flex items-center gap-4">
-                    <div>
-                      <span className="text-[10px] tracking-widest uppercase text-[#6B625A] font-semibold block">NGO Platform</span>
-                      <h2 className="text-lg sm:text-xl font-heading font-semibold text-[#292524] leading-tight">
-                        Project Workspace
-                      </h2>
-                    </div>
-                  </div>
-
-                  {/* Center Tabs: Dashboard, Projects, Tasks ONLY */}
-                  <nav className="flex items-center gap-1 bg-[#FFF9F2] p-1 rounded-xl border border-[#E5DDD3]/60" aria-label="Main Navigation">
-                    {['dashboard', 'projects', 'tasks'].map((t) => (
-                      <button 
-                        key={t}
-                        type="button"
-                        id={`tabBtn-${t}`}
-                        onClick={() => setTab(t)}
-                        className={`px-5 py-2 text-sm font-medium rounded-lg capitalize transition-all cursor-pointer ${tab === t ? 'bg-[#F47B20] text-white shadow-sm font-semibold' : 'text-[#6B625A] hover:text-[#292524] hover:bg-white/80'}`}
-                      >
-                        {t}
-                      </button>
-                    ))}
-                  </nav>
-
-                  {/* Right Spacer — no role badges or workspace switcher */}
-                  <div className="w-32"></div>
-
-                </header>
-
-                {/* Body Area with Floating Left Pill Toolbar */}
-                <div className="flex-1 flex relative p-4 sm:p-6 lg:p-8">
-
-                  {/* Floating Pill Toolbar: Dashboard, Projects, Tasks, Analytics + Divider + Sign Out */}
-                  <aside className="hidden md:flex flex-col items-center mr-6 self-start sticky top-24 z-20">
-                                    <nav className="floating-pill-toolbar !bg-[#080EE0]" style={{ backgroundColor: '#080EE0' }} aria-label="Quick Toolbar">
-                      <button type="button" onClick={() => setTab('dashboard')} className={tab === 'dashboard' ? 'active' : ''} aria-label="Dashboard Overview">
-                        <Icons.LayoutGrid />
-                        <span className="tooltip">Dashboard Overview</span>
-                      </button>
-                      <button type="button" onClick={() => setTab('projects')} className={tab === 'projects' ? 'active' : ''} aria-label="Projects Directory">
-                        <Icons.FolderKanban />
-                        <span className="tooltip">Projects Directory</span>
-                      </button>
-                      <button type="button" onClick={() => setTab('tasks')} className={tab === 'tasks' ? 'active' : ''} aria-label="Task Checklist">
-                        <Icons.ListTodo />
-                        <span className="tooltip">Task Checklist</span>
-                      </button>
-                      <button type="button" onClick={() => setTab('analytics')} className={tab === 'analytics' ? 'active' : ''} aria-label="Impact Analytics">
-                        <Icons.TrendingUp />
-                        <span className="tooltip">Impact Analytics</span>
-                      </button>
-                      {/* Divider */}
-                      <div style={{width:'20px',height:'1px',background:'rgba(255,255,255,0.3)',margin:'4px auto'}} />
-                      {/* Sign Out */}
-                      <button
-                        type="button"
-                        id="sidebarSignOutBtn"
-                        onClick={handleSignOut}
-                        aria-label="Sign Out"
-                        style={{color:'white'}}
-                        onMouseEnter={e => { e.currentTarget.style.background='white'; e.currentTarget.style.color='#F47B20'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='white'; }}
-                      >
-                        <Icons.LogOut />
-                        <span className="tooltip">Sign Out</span>
-                      </button>
-                    </nav>
-                  </aside>
-
-                  {/* Main View Area */}
-                  <main className="flex-1 overflow-x-hidden">
-                    
-                    {/* ---------------- Tab 1: Dashboard ---------------- */}
-                    {tab === 'dashboard' && (
-                      <div className="space-y-8 animate-fade-in">
-                        
-                        {/* Top Context Header */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5DDD3]/70">
-                          <div>
-                            <h1 className="text-2xl sm:text-3xl font-heading font-semibold text-[#292524]">
-                              {roleConfigs[role].fullName} Overview
-                            </h1>
-                            <p className="text-sm text-[#6B625A] mt-0.5">
-                              {roleConfigs[role].subtitle}
-                            </p>
-                          </div>
-
-                          <button 
-                            type="button" 
-                            onClick={() => setActiveModal(role === 'coordinator' ? 'field-update' : 'new-task')} 
-                            className="px-4 py-2.5 rounded-xl bg-[#F47B20] hover:bg-[#DE6C15] text-white font-medium text-sm shadow-sm transition-all flex items-center gap-2 cursor-pointer self-start sm:self-auto"
-                          >
-                            <Icons.Plus />
-                            <span>{roleConfigs[role].quickActionText}</span>
-                          </button>
-                        </div>
-                      
-
-                        {/* Requirement 4: Real-time Metrics KPI Stat Cards */}
-                        <section aria-label="Key Performance Indicators" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                          
-                          {/* Card 1: Active Projects */}
-                          <article className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                            <div className="flex items-center justify-between mb-4">
-                              <h3 className="text-sm font-heading font-medium text-[#6B625A]">Active Projects</h3>
-                              <span className="w-10 h-10 rounded-xl bg-[#FFF9F2] text-[#F47B20] flex items-center justify-center group-hover:scale-105 transition-transform">
-                                <Icons.Folder />
-                              </span>
-                            </div>
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-3xl sm:text-4xl font-bold font-body text-[#292524]">{roleActiveProjects}</span>
-                              <span className="text-xs font-semibold text-[#F47B20] uppercase tracking-wider">Under Delivery</span>
-                            </div>
-                            <div className="mt-3 pt-3 border-t border-[#E5DDD3]/50 flex items-center justify-between text-xs text-[#6B625A]">
-                              <span>Live synced metric</span>
-                              <button onClick={() => setTab('projects')} className="hover:text-[#F47B20] font-medium cursor-pointer">View all &rarr;</button>
-                            </div>
-                          </article>
-
-                          {/* Card 2: Tasks Completed */}
-                          <article className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                            <div className="flex items-center justify-between mb-4">
-                              <h3 className="text-sm font-heading font-medium text-[#6B625A]">Tasks Completed</h3>
-                              <span className="w-10 h-10 rounded-xl bg-[#FFF9F2] text-[#F9B233] flex items-center justify-center group-hover:scale-105 transition-transform">
-                                <Icons.ListChecks />
-                              </span>
-                            </div>
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-3xl sm:text-4xl font-bold font-body text-[#292524]">{roleTasksDisplay}</span>
-                              <span className="text-xs font-semibold text-[#F9B233] uppercase tracking-wider">Milestones Met</span>
-                            </div>
-                            <div className="mt-3 pt-3 border-t border-[#E5DDD3]/50 flex items-center justify-between text-xs text-[#6B625A]">
-                              <span>Click tasks to toggle</span>
-                              <button onClick={() => setTab('tasks')} className="hover:text-[#F47B20] font-medium cursor-pointer">Open board &rarr;</button>
-                            </div>
-                          </article>
-
-                        </section>
-                      </main>
-
-                        {/* Project Pulse Section with Clickable Progress Bars *}
-                        // <section className="bg-[#FFF9F2]/70 rounded-2xl p-6 sm:p-8 border border-[#E5DDD3]">
-                        //   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
-                        //     <div>
-                        //       <h2 className="text-2xl font-heading font-semibold text-[#292524]">Project Pulse</h2>
-                        //       <p className="text-sm text-[#6B625A]">Current delivery metric & milestones. Click on any bar or '+ Advance' to update delivery live!</p>
-                        //     </div>
-                        //     <span className="text-xs text-[#6B625A] flex items-center gap-1.5 self-start sm:self-center">
-                        //       <span className="w-2 h-2 rounded-full bg-[#F47B20] animate-pulse"></span>
-                        //       Interactive real-time updates
-                        //     </span>
-                        //   </div>
-
-                        //   <div className="space-y-6">
-                        //     {projects.map((p) => (
-                        //       <div key={p.id} className="bg-white p-5 rounded-xl border border-[#E5DDD3] shadow-sm hover:shadow-md transition-all">
-                        //         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                        //           <div>
-                        //             <div className="flex items-center gap-2">
-                        //               <h3 className="text-base font-semibold font-heading text-[#292524]">{p.title}</h3>
-                        //               <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${p.status === 'Completed' ? 'bg-[#292524] text-white' : 'bg-[#FFF9F2] text-[#F47B20] border border-[#F47B20]/30'}`}>
-                        //                 {p.category}
-                        //               </span>
-                        //               {p.progress === 100 && (
-                        //                 <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-[#F47B20] text-white">
-                        //                   100% Completed
-                        //                 </span>
-                        //               )}
-                        //             </div>
-                        //             <p className="text-xs text-[#6B625A] mt-0.5 flex items-center gap-2">
-                        //               <span className="flex items-center gap-1"><Icons.MapPin /> {p.location}</span>
-                        //               <span>•</span>
-                        //               <span>Lead: {p.lead}</span>
-                        //             </p>
-                        //           </div>
-                        //           <div className="text-right flex sm:flex-col items-center sm:items-end justify-between gap-1">
-                        //             <div className="flex items-center gap-2">
-                        //               <button 
-                        //                 type="button" 
-                        //                 onClick={() => handleUpdateProjectProgress(p.id, p.progress >= 100 ? 30 : Math.min(100, p.progress + 15))}
-                        //                 className="px-2 py-0.5 text-[11px] font-semibold rounded bg-[#FFF9F2] hover:bg-[#F47B20] hover:text-white text-[#F47B20] border border-[#F47B20]/40 transition-colors cursor-pointer"
-                        //                 title="Click to advance delivery progress"
-                        //               >
-                        //                 + Advance
-                        //               </button>
-                        //               <span className={`text-sm font-bold ${p.progress === 100 ? 'text-[#F47B20]' : 'text-[#292524]'}`}>{p.progress}%</span>
-                        //             </div>
-                        //             <span className="text-xs text-[#6B625A]">Spent: {p.spent} / {p.budget}</span>
-                        //           </div>
-                        //         </div>
-
-                        //         {/* Clickable Progress Bar */}
-                        //         <div 
-                        //           onClick={(e) => {
-                        //             const rect = e.currentTarget.getBoundingClientRect();
-                        //             const percent = Math.round(((e.clientX - rect.left) / rect.width) * 100);
-                        //             handleUpdateProjectProgress(p.id, Math.max(10, Math.min(100, percent)));
-                        //           }}
-                        //           className="w-full bg-[#FFF9F2] h-4 rounded-full overflow-hidden border border-[#E5DDD3]/80 p-0.5 cursor-pointer relative group"
-                        //           title="Click anywhere to update project delivery progress"
-                        //         >
-                        //           <div 
-                        //             className="h-full rounded-full transition-all duration-300 ease-out" 
-                        //             style={{ width: `${p.progress}%`, backgroundColor: p.progressColor }}
-                        //             role="progressbar"
-                        //             aria-valuenow={p.progress}
-                        //           />
-                        //         </div>
-                        //         <div className="mt-2.5 flex items-center justify-between text-xs text-[#6B625A]">
-                        //           <span>Next Milestone: {p.nextMilestone}</span>
-                        //           <span className="text-[#292524] font-medium">{p.beneficiaries}</span>
-                        //         </div>
-                        //       </div>
-                        //     ))}
-                        //   </div>
-                        // </section>
-
-                        // {/* Recent Field Updates Feed */}
-                        // <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        //   <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm">
-                        //     <div className="flex items-center justify-between mb-4">
-                        //       <div>
-                        //         <h3 className="text-lg font-heading font-semibold text-[#292524]">Recent Field Updates</h3>
-                        //         <p className="text-xs text-[#6B625A]">Real-time field coordinator submissions & photo logs</p>
-                        //       </div>
-                        //       <button 
-                        //         type="button" 
-                        //         onClick={() => setActiveModal('field-update')} 
-                        //         className="text-xs font-semibold text-[#F47B20] hover:underline cursor-pointer"
-                        //       >
-                        //         + Log Field Note
-                        //       </button>
-                        //     </div>
-
-                        //     <div className="space-y-3.5">
-                        //       {fieldUpdates.map(u => (
-                        //         <div key={u.id} className="p-3.5 rounded-xl bg-[#FFF9F2]/70 border border-[#E5DDD3]/70 hover:border-[#F9B233] transition-all">
-                        //           <div className="flex items-center justify-between text-xs mb-1">
-                        //             <div className="flex items-center gap-2">
-                        //               <span className="font-semibold text-[#292524]">{u.author}</span>
-                        //               <span className="px-1.5 py-0.5 rounded text-[10px] bg-white border border-[#E5DDD3] text-[#6B625A]">{u.role}</span>
-                        //             </div>
-                        //             <span className="text-[#6B625A]">{u.timestamp}</span>
-                        //           </div>
-                        //           <p className="text-xs text-[#292524] leading-relaxed mb-2">{u.text}</p>
-                        //           <div className="flex items-center justify-between text-[11px] text-[#6B625A]">
-                        //             <span className="flex items-center gap-1"><Icons.MapPin /> {u.location}</span>
-                        //             <span className="px-2 py-0.5 rounded-full bg-white text-[#292524] font-medium border border-[#E5DDD3]">{u.badge}</span>
-                        //           </div>
-                        //         </div>
-                        //       ))}
-                        //     </div>
-                        //   </div>
-
-                        //   {/* Session Governance Card — Sign Out to switch workspace */}
-                        //   <div className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm flex flex-col justify-between">
-                        //     <div>
-                        //       <h3 className="text-lg font-heading font-semibold text-[#292524] mb-1">Session Governance</h3>
-                        //       <p className="text-xs text-[#6B625A] mb-4">Active session compliance & audit integrity</p>
-                              
-                        //       <div className="p-3.5 rounded-xl bg-[#FFF9F2] border border-[#F9B233]/40 mb-4">
-                        //         <span className="text-[10px] uppercase font-bold text-[#F47B20] block mb-1">Session Scope</span>
-                        //         <p className="text-base font-heading font-semibold text-[#292524]">{roleConfigs[role].fullName}</p>
-                        //         <p className="text-xs text-[#6B625A] mt-1 leading-relaxed">{roleConfigs[role].description}</p>
-                        //       </div>
-
-                        //       <ul className="text-xs space-y-2 text-[#6B625A]">
-                        //         <li className="flex items-center gap-2">
-                        //           <span className="text-[#F47B20]"><Icons.Check /></span>
-                        //           <span>100% Audit logging active</span>
-                        //         </li>
-                        //         <li className="flex items-center gap-2">
-                        //           <span className="text-[#F47B20]"><Icons.Check /></span>
-                        //           <span>Strict WCAG 2.1 AA compliance</span>
-                        //         </li>
-                        //         <li className="flex items-center gap-2">
-                        //           <span className="text-[#F47B20]"><Icons.Check /></span>
-                        //           <span>Zero brand logo policy enforced</span>
-                        //         </li>
-                        //       </ul>
-                        //     </div>
-
-                        //     <div className="pt-4 border-t border-[#E5DDD3]/70 mt-4 flex items-center justify-between text-xs text-[#6B625A]">
-                        //       <span>To switch workspace:</span>
-                        //       <button 
-                        //         type="button" 
-                        //         onClick={handleSignOut}
-                        //         className="text-[#F47B20] hover:underline font-semibold cursor-pointer"
-                        //       >
-                        //         Sign Out &rarr;
-                        //       </button>
-                        //     </div>
-                        //   </div>
-                        // </div>
-
-                      //</div>
-                    //)}
-                          
-                    {/* ---------------- Tab 2: Projects ---------------- */}
-                    {...tab === 'projects' && (
-                      <div className="space-y-6 animate-fade-in">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5DDD3]/70">
-                          <div>
-                            <h1 className="text-2xl sm:text-3xl font-heading font-semibold text-[#292524]">Projects Directory</h1>
-                            <p className="text-sm text-[#6B625A] mt-0.5">Explore ongoing grassroots interventions, budget allocations, and delivery schedules.</p>
-                          </div>
-                          <button 
-                            type="button" 
-                            onClick={() => setActiveModal('new-task')} 
-                            className="px-4 py-2.5 rounded-xl bg-[#F47B20] hover:bg-[#DE6C15] text-white font-medium text-sm shadow-sm transition-all flex items-center gap-2 self-start sm:self-auto cursor-pointer"
-                          >
-                            <Icons.Plus />
-                            <span>Add New Initiative</span>
-                          </button>
-                        </div>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                          {projects.map(p => (
-                            <div key={p.id} className="bg-white rounded-2xl border border-[#E5DDD3] p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-                              <div>
-                                <div className="flex items-start justify-between gap-2 mb-3">
-                                  <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${p.status === 'Completed' ? 'bg-[#292524] text-white' : 'bg-[#FFF9F2] text-[#F47B20] border border-[#F47B20]/40'}`}>
-                                    {p.category}
-                                  </span>
-                                  <span className={`text-xs font-bold ${p.status === 'Completed' ? 'text-[#F47B20]' : 'text-[#6B625A]'}`}>
-                                    {p.status}
-                                  </span>
-                                </div>
-
-                                <h3 className="text-xl font-heading font-semibold text-[#292524] mb-2">{p.title}</h3>
-                                <p className="text-xs text-[#6B625A] leading-relaxed mb-4">{p.description}</p>
-
-                                <div className="space-y-2 text-xs text-[#6B625A] mb-4">
-                                  <div className="flex items-center gap-1.5"><span className="text-[#F47B20]"><Icons.MapPin /></span><span>{p.location}</span></div>
-                                  <div className="flex items-center gap-1.5"><span className="text-[#F47B20]"><Icons.Users /></span><span>{p.beneficiaries}</span></div>
-                                  <div className="flex items-center gap-1.5"><span className="text-[#F47B20]"><Icons.Shield /></span><span>Lead: <strong className="text-[#292524]">{p.lead}</strong></span></div>
-                                </div>
-                              </div>
-
-                              <div className="pt-4 border-t border-[#E5DDD3]/70">
-                                <div className="flex items-center justify-between text-xs mb-1.5">
-                                  <span className="font-semibold text-[#292524]">{p.progress}% Delivery</span>
-                                  <span className="text-[#6B625A]">{p.spent} / {p.budget}</span>
-                                </div>
-                                <div 
-                                  onClick={(e) => {
-                                    const rect = e.currentTarget.getBoundingClientRect();
-                                    const percent = Math.round(((e.clientX - rect.left) / rect.width) * 100);
-                                    handleUpdateProjectProgress(p.id, Math.max(10, Math.min(100, percent)));
-                                  }}
-                                  className="w-full bg-[#FFF9F2] h-2.5 rounded-full overflow-hidden border border-[#E5DDD3] cursor-pointer"
-                                  title="Click to adjust delivery progress"
-                                >
-                                  <div className="h-full rounded-full transition-all duration-300" style={{ width: `${p.progress}%`, backgroundColor: p.progressColor }} />
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* ---------------- Tab 3: Tasks ---------------- */}
-                    { tab === 'tasks' && (
-                      <div className="space-y-6 animate-fade-in">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5DDD3]/70">
-                          <div>
-                            <h1 className="text-2xl sm:text-3xl font-heading font-semibold text-[#292524]">Tasks Checklist</h1>
-                            <p className="text-sm text-[#6B625A] mt-0.5">Click any checkbox to complete/reopen a task and watch the top KPI cards update in real time!</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <button 
-                              type="button" 
-                              onClick={() => setActiveModal('field-update')} 
-                              className="px-3.5 py-2 rounded-xl bg-[#FFF9F2] hover:bg-white text-[#292524] border border-[#E5DDD3] font-medium text-xs shadow-sm transition-all cursor-pointer"
-                            >
-                              Submit Field Update
-                            </button>
-                            <button 
-                              type="button" 
-                              onClick={() => setActiveModal('new-task')} 
-                              className="px-4 py-2 rounded-xl bg-[#F47B20] hover:bg-[#DE6C15] text-white font-medium text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
-                            >
-                              <Icons.Plus />
-                              <span>Add Task</span>
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Filter Pills */}
-                        <div className="flex flex-wrap items-center gap-2">
-                          <button 
-                            type="button" 
-                            onClick={() => setTaskFilter('all')} 
-                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${taskFilter === 'all' ? 'bg-[#292524] text-white' : 'bg-white text-[#6B625A] border border-[#E5DDD3]'}`}
-                          >
-                            All Tasks ({tasks.length})
-                          </button>
-                          <button 
-                            type="button" 
-                            onClick={() => setTaskFilter('in-progress')} 
-                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${taskFilter === 'in-progress' ? 'bg-[#F47B20] text-white' : 'bg-white text-[#6B625A] border border-[#E5DDD3]'}`}
-                          >
-                            In Progress ({tasks.filter(t => t.status === 'in-progress').length})
-                          </button>
-                          <button 
-                            type="button" 
-                            onClick={() => setTaskFilter('review')} 
-                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${taskFilter === 'review' ? 'bg-[#F9B233] text-[#292524]' : 'bg-white text-[#6B625A] border border-[#E5DDD3]'}`}
-                          >
-                            Needs Review ({tasks.filter(t => t.status === 'review').length})
-                          </button>
-                          <button 
-                            type="button" 
-                            onClick={() => setTaskFilter('completed')} 
-                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${taskFilter === 'completed' ? 'bg-[#292524] text-[#FFF9F2]' : 'bg-white text-[#6B625A] border border-[#E5DDD3]'}`}
-                          >
-                            Completed ({completedTasksCount})
-                          </button>
-                        </div>
-
-                        {/* Task Item Cards with Interactive Checkboxes */}
-                        <div className="bg-white rounded-2xl border border-[#E5DDD3] divide-y divide-[#E5DDD3]/60 shadow-sm overflow-hidden">
-                          {filteredTasks.map(t => (
-                            <div key={t.id} className={`p-4 sm:p-5 flex items-start sm:items-center justify-between gap-4 hover:bg-[#FFF9F2]/50 transition-colors ${t.status === 'completed' ? 'bg-[#FFF9F2]/30' : ''}`}>
-                              <div className="flex items-start gap-3.5 flex-1">
-                                <button 
-                                  type="button" 
-                                  onClick={() => handleToggleTask(t.id)}
-                                  className={`mt-0.5 w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all cursor-pointer ${t.status === 'completed' ? 'bg-[#F47B20] border-[#F47B20] text-white' : 'border-[#E5DDD3] hover:border-[#F47B20] bg-white'}`}
-                                  aria-label={`Toggle task ${t.title}`}
-                                >
-                                  {t.status === 'completed' && <Icons.Check />}
-                                </button>
-                                <div className="flex-1">
-                                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                                    <h4 className={`text-sm font-semibold text-[#292524] ${t.status === 'completed' ? 'line-through text-[#6B625A]' : ''}`}>
-                                      {t.title}
-                                    </h4>
-                                    <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${t.priority === 'High' ? 'bg-[#FFF9F2] text-[#F47B20] border border-[#F47B20]/40' : t.priority === 'Medium' ? 'bg-[#FFF9F2] text-[#F9B233] border border-[#F9B233]/40' : 'bg-[#F8F6F2] text-[#6B625A]'}`}>
-                                      {t.priority}
-                                    </span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-3 text-xs text-[#6B625A]">
-                                    <span className="font-medium text-[#292524]">{t.project}</span>
-                                    <span>•</span>
-                                    <span>Assignee: {t.assignee} ({t.role})</span>
-                                    <span>•</span>
-                                    <span className="flex items-center gap-1"><Icons.Clock /> Due {t.dueDate}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="self-center sm:self-auto">
-                                <span className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase ${t.status === 'completed' ? 'bg-[#292524] text-white' : t.status === 'review' ? 'bg-[#F9B233] text-[#292524]' : 'bg-[#FFF9F2] text-[#F47B20] border border-[#F47B20]/40'}`}>
-                                  {t.status}
-                                </span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-
-                      </div>
-                    )}
-
-                    {/* ---------------- Tab 4: Analytics ---------------- */}
-                    {tab === 'analytics' && (
-                      <div className="space-y-6 animate-fade-in">
-                        <div className="pb-4 border-b border-[#E5DDD3]/70">
-                          <h1 className="text-2xl sm:text-3xl font-heading font-semibold text-[#292524]">Portfolio Impact Analytics</h1>
-                          <p className="text-sm text-[#6B625A] mt-0.5">Audited metrics on beneficiary reach, geographic distribution, and resource effectiveness.</p>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                          <div className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm">
-                            <h3 className="text-base font-heading font-semibold text-[#292524] mb-2">Fund Allocation by Sector</h3>
-                            <p className="text-xs text-[#6B625A] mb-4">Total Portfolio: ₹1,080k</p>
-                            <div className="space-y-3 text-xs">
-                              <div>
-                                <div className="flex justify-between mb-1"><span>Education (Schools for All)</span><span className="font-bold text-[#292524]">₹480k (44.4%)</span></div>
-                                <div className="w-full bg-[#FFF9F2] h-2 rounded-full overflow-hidden"><div className="h-full bg-[#F47B20]" style={{ width: '44.4%' }} /></div>
-                              </div>
-                              <div>
-                                <div className="flex justify-between mb-1"><span>Water & Sanitation (Clean Water)</span><span className="font-bold text-[#292524]">₹360k (33.3%)</span></div>
-                                <div className="w-full bg-[#FFF9F2] h-2 rounded-full overflow-hidden"><div className="h-full bg-[#F9B233]" style={{ width: '33.3%' }} /></div>
-                              </div>
-                              <div>
-                                <div className="flex justify-between mb-1"><span>Health Outreach (Mobile Clinic)</span><span className="font-bold text-[#292524]">₹240k (22.2%)</span></div>
-                                <div className="w-full bg-[#FFF9F2] h-2 rounded-full overflow-hidden"><div className="h-full bg-[#292524]" style={{ width: '22.2%' }} /></div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm">
-                            <h3 className="text-base font-heading font-semibold text-[#292524] mb-2">Beneficiary Demographics</h3>
-                            <p className="text-xs text-[#6B625A] mb-4">18,400 Verified Individuals</p>
-                            <div className="space-y-3 text-xs">
-                              <div className="flex justify-between py-1.5 border-b border-[#E5DDD3]/60"><span className="text-[#6B625A]">Rural Women & Mothers</span><span className="font-bold text-[#292524]">7,820 (42.5%)</span></div>
-                              <div className="flex justify-between py-1.5 border-b border-[#E5DDD3]/60"><span className="text-[#6B625A]">Primary School Students</span><span className="font-bold text-[#292524]">4,800 (26.1%)</span></div>
-                              <div className="flex justify-between py-1.5 border-b border-[#E5DDD3]/60"><span className="text-[#6B625A]">Smallholder Farming Families</span><span className="font-bold text-[#292524]">4,180 (22.7%)</span></div>
-                            </div>
-                          </div>
-                          <div className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm">
-                            <h3 className="text-base font-heading font-semibold text-[#292524] mb-2">Delivery Velocity</h3>
-                            <p className="text-xs text-[#6B625A] mb-4">Milestone Adherence Metric</p>
-                            <div className="p-4 rounded-xl bg-[#FFF9F2] border border-[#F9B233]/40 text-center">
-                              <span className="text-3xl font-bold font-body text-[#F47B20]">94.2%</span>
-                              <p className="text-xs font-semibold text-[#292524] mt-1">On-Time Milestone Velocity</p>
-                              <p className="text-[11px] text-[#6B625A] mt-1">Average resolution time: 3.2 days per field block.</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* ---------------- Tab 5: Reports ---------------- */}
-                    {tab === 'reports' && (
-                      <div className="space-y-6 animate-fade-in">
-                        <div className="flex items-center justify-between pb-4 border-b border-[#E5DDD3]/70">
-                          <div>
-                            <h1 className="text-2xl sm:text-3xl font-heading font-semibold text-[#292524]">Governance & Donor Reports</h1>
-                            <p className="text-sm text-[#6B625A] mt-0.5">Download verified utilization certificates and compliance summaries.</p>
-                          </div>
-                          <button 
-                            type="button" 
-                            onClick={() => triggerToast('Generated Q3 Audit Package (PDF Ready)')} 
-                            className="px-4 py-2.5 rounded-xl bg-[#292524] hover:bg-black text-[#FFF9F2] text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer"
-                          >
-                            <Icons.FileText /> Export All Reports
-                          </button>
-                        </div>
-                        <div className="bg-white rounded-2xl border border-[#E5DDD3] divide-y divide-[#E5DDD3]/60 shadow-sm">
-                          <div className="p-5 flex items-center justify-between">
-                            <div><h4 className="text-sm font-semibold text-[#292524]">Q3 2026 Statutory Compliance & Fund Audit</h4><p className="text-xs text-[#6B625A]">Audited by Singhania & Associates • Certified on Oct 05, 2026</p></div>
-                            <button onClick={() => triggerToast('Downloading Statutory Compliance Report')} className="px-3 py-1.5 rounded-lg border border-[#E5DDD3] hover:border-[#292524] text-xs font-semibold text-[#292524] cursor-pointer">Download</button>
-                          </div>
-                          <div className="p-5 flex items-center justify-between">
-                            <div><h4 className="text-sm font-semibold text-[#292524]">Rajasthan Clean Water Initiative: Mid-Term Evaluation</h4><p className="text-xs text-[#6B625A]">Solar pump yield tests & water purity TDS certification</p></div>
-                            <button onClick={() => triggerToast('Downloading Clean Water Mid-term Report')} className="px-3 py-1.5 rounded-lg border border-[#E5DDD3] hover:border-[#292524] text-xs font-semibold text-[#292524] cursor-pointer">Download</button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                  </main>
-
-                
-
-                {/* Minimal Bottom Footer: Non-intrusive role label bottom-left */}
-                <footer className="w-full px-6 sm:px-8 py-3 border-t border-[#E5DDD3]/60 bg-white flex items-center justify-between text-xs text-[#6B625A]">
-                  <span className="text-[11px] font-semibold tracking-wider uppercase">
-                    {role === 'admin' ? 'ADMIN' : role === 'pm' ? 'PROJECT MANAGER' : 'COORDINATOR'}
-                  </span>
-                  <span className="text-[11px] text-[#6B625A]/60">NGO Project Management Platform • Field & Portfolio</span>
-                </footer>
-              </div>
-            </div>
-          )}
-
-          {/* Modals */}
-          {activeModal === 'help' && (
-            <div className="fixed inset-0 bg-[#292524]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" onClick={() => setActiveModal(null)}>
-              <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#F9B233]/40" onClick={e => e.stopPropagation()}>
-                <div className="flex items-center justify-between pb-3 border-b border-[#E5DDD3]">
-                  <h3 className="text-lg font-heading font-semibold text-[#292524]">NGO Platform Help & Support</h3>
-                  <button onClick={() => setActiveModal(null)} className="text-[#6B625A] hover:text-[#292524] p-1 cursor-pointer"><Icons.Close /></button>
-                </div>
-                <div className="py-4 space-y-3 text-xs text-[#6B625A] leading-relaxed">
-                  <p><strong className="text-[#292524]">Sign-in:</strong> Click "Sign In" or choose any of the 1-click demonstration roles.</p>
-                  <p><strong className="text-[#292524]">Support Hotline:</strong> +91 1800-419-8800 (Mon–Sat, 8:00 AM – 7:00 PM IST)</p>
-                </div>
-                <button onClick={() => setActiveModal(null)} className="w-full py-2.5 bg-[#F47B20] text-white font-medium text-xs rounded-xl hover:bg-[#DE6C15] cursor-pointer">
-                  Got it, thanks
-                </button>
-              </div>
-            </div>
-          )}
-
-          {activeModal === 'forgot-pw' && (
-            <div className="fixed inset-0 bg-[#292524]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" onClick={() => setActiveModal(null)}>
-              <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#F9B233]/40" onClick={e => e.stopPropagation()}>
-                <div className="flex items-center justify-between pb-3 border-b border-[#E5DDD3]">
-                  <h3 className="text-lg font-heading font-semibold text-[#292524]">Password Recovery</h3>
-                  <button onClick={() => setActiveModal(null)} className="text-[#6B625A] hover:text-[#292524] p-1 cursor-pointer"><Icons.Close /></button>
-                </div>
-                <form onSubmit={e => { e.preventDefault(); setActiveModal(null); triggerToast('Password reset link dispatched.'); }} className="py-4 space-y-4">
-                  <p className="text-xs text-[#6B625A]">Enter your organizational email to receive a recovery link:</p>
-                  <input type="email" required placeholder="coordinator@grassroots.ngo" defaultValue="admin@grassroots.ngo" className="w-full px-3.5 py-2.5 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-xs text-[#292524]" />
-                  <button type="submit" className="w-full py-2.5 bg-[#F47B20] text-white font-medium text-xs rounded-xl hover:bg-[#DE6C15] cursor-pointer">Send Recovery Link</button>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {activeModal === 'field-update' && (
-            <div className="fixed inset-0 bg-[#292524]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" onClick={() => setActiveModal(null)}>
-              <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-[#F9B233]/40" onClick={e => e.stopPropagation()}>
-                <div className="flex items-center justify-between pb-3 border-b border-[#E5DDD3]">
-                  <h3 className="text-lg font-heading font-semibold text-[#292524]">Submit Field Update</h3>
-                  <button onClick={() => setActiveModal(null)} className="text-[#6B625A] hover:text-[#292524] p-1 cursor-pointer"><Icons.Close /></button>
-                </div>
-                <form onSubmit={e => {
-                  e.preventDefault();
-                  const form = e.target;
-                  const newUpdate = {
-                    id: 'fu' + Date.now(),
-                    author: role === 'coordinator' ? 'Suresh Kumar' : 'Anita Roy',
-                    role: role === 'coordinator' ? 'Coordinator' : 'Project Manager',
-                    location: form.location.value || 'Field Cluster',
-                    timestamp: 'Just now',
-                    text: form.notes.value,
-                    badge: form.badge.value || 'Field Verified'
-                  };
-                  setFieldUpdates(prev => [newUpdate, ...prev]);
-                  setActiveModal(null);
-                  triggerToast('Field log submitted successfully!');
-                }} className="py-4 space-y-4 text-xs">
-                  <div>
-                    <label className="block font-medium text-[#6B625A] mb-1">Intervention Project:</label>
-                    <select name="project" className="w-full px-3 py-2 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524]">
-                      <option>Clean Water Initiative</option>
-                      <option>Schools for all</option>
-                      <option>Mobile Health Clinic</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block font-medium text-[#6B625A] mb-1">Field Location:</label>
-                    <input type="text" name="location" required placeholder="e.g. Hamlet 4, Pokhran Cluster" defaultValue="Jaisalmer Cluster 4" className="w-full px-3 py-2 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524]" />
-                  </div>
-                  <div>
-                    <label className="block font-medium text-[#6B625A] mb-1">Progress Notes:</label>
-                    <textarea name="notes" required rows="3" placeholder="Describe progress or observations..." defaultValue="Verified solar pump water output at 48 LPM. Quality safe for drinking." className="w-full px-3 py-2 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524]" />
-                  </div>
-                  <div>
-                    <label className="block font-medium text-[#6B625A] mb-1">Beneficiary Headcount / Tag:</label>
-                    <input type="text" name="badge" placeholder="e.g. 85 Villagers" defaultValue="64 Families Verified" className="w-full px-3 py-2 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524]" />
-                  </div>
-                  <div className="pt-2 flex justify-end gap-2">
-                    <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 border border-[#E5DDD3] rounded-xl text-[#6B625A] cursor-pointer">Cancel</button>
-                    <button type="submit" className="px-4 py-2 bg-[#F47B20] text-white font-medium rounded-xl hover:bg-[#DE6C15] cursor-pointer">Publish Field Log</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {activeModal === 'new-task' && (
-            <div className="fixed inset-0 bg-[#292524]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" onClick={() => setActiveModal(null)}>
-              <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-[#F9B233]/40" onClick={e => e.stopPropagation()}>
-                <div className="flex items-center justify-between pb-3 border-b border-[#E5DDD3]">
-                  <h3 className="text-lg font-heading font-semibold text-[#292524]">Create New Task</h3>
-                  <button onClick={() => setActiveModal(null)} className="text-[#6B625A] hover:text-[#292524] p-1 cursor-pointer"><Icons.Close /></button>
-                </div>
-                <form onSubmit={e => {
-                  e.preventDefault();
-                  const form = e.target;
-                  const newTask = {
-                    id: 't' + Date.now(),
-                    title: form.title.value,
-                    project: form.project.value,
-                    assignee: form.assignee.value,
-                    role: 'Coordinator',
-                    status: 'in-progress',
-                    priority: form.priority.value,
-                    dueDate: form.dueDate.value
-                  };
-                  setTasks(prev => [newTask, ...prev]);
-                  setActiveModal(null);
-                  triggerToast('New task registered and assigned');
-                }} className="py-4 space-y-4 text-xs">
-                  <div>
-                    <label className="block font-medium text-[#6B625A] mb-1">Task Title:</label>
-                    <input type="text" name="title" required placeholder="e.g. Inspect solar panel wiring" defaultValue="Deliver water quality testing kits to Hamlet 5" className="w-full px-3 py-2 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524]" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block font-medium text-[#6B625A] mb-1">Project:</label>
-                      <select name="project" className="w-full px-3 py-2 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524]">
-                        <option>Clean Water Initiative</option>
-                        <option>Schools for all</option>
-                        <option>Mobile Health Clinic</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block font-medium text-[#6B625A] mb-1">Priority:</label>
-                      <select name="priority" className="w-full px-3 py-2 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524]">
-                        <option>High</option>
-                        <option>Medium</option>
-                        <option>Normal</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block font-medium text-[#6B625A] mb-1">Assignee:</label>
-                      <input type="text" name="assignee" required defaultValue="Suresh Kumar" className="w-full px-3 py-2 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524]" />
-                    </div>
-                    <div>
-                      <label className="block font-medium text-[#6B625A] mb-1">Target Due Date:</label>
-                      <input type="text" name="dueDate" required defaultValue="Nov 10, 2026" className="w-full px-3 py-2 bg-[#F8F6F2] border border-[#E5DDD3] rounded-xl text-[#292524]" />
-                    </div>
-                  </div>
-                  <div className="pt-2 flex justify-end gap-2">
-                    <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 border border-[#E5DDD3] rounded-xl text-[#6B625A] cursor-pointer">Cancel</button>
-                    <button type="submit" className="px-4 py-2 bg-[#F47B20] text-white font-medium rounded-xl hover:bg-[#DE6C15] cursor-pointer">Create Task</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* Toast Notification */}
-          {toast && (
-            <div className="fixed bottom-14 sm:bottom-6 right-6 z-50 bg-[#292524] text-[#FFF9F2] px-4 py-3 rounded-xl shadow-xl border border-[#F9B233] text-xs flex items-center gap-2 animate-fade-in">
-              <span className="text-[#F47B20]"><Icons.Check /></span>
-              <span>{toast}</span>
-            </div>
-          )}
-
-          {/* Dev navigator removed — Sign Out via sidebar returns to login */}
-
-        </div>
-      );
+    const money = n => '₹' + Number(n).toLocaleString('en-IN');
+    function App() {
+      const [screen,setScreen] = useState('login');
+      const [role,setRole] = useState('admin');
+      const [tab,setTab] = useState('dashboard');
+      const [projects,setProjects] = useState(projectsSeed);
+      const [tasks,setTasks] = useState(tasksSeed);
+      const [updates,setUpdates] = useState(fieldSeed);
+      const [filter,setFilter] = useState('all');
+      const [modal,setModal] = useState('');
+      const [toast,setToast] = useState('');
+      useEffect(() => { if(!toast) return; const id=setTimeout(()=>setToast(''),2800); return ()=>clearTimeout(id); },[toast]);
+      const notify = message => setToast(message);
+      const completed = tasks.filter(t=>t.status==='completed').length;
+      const activeProjects = projects.filter(p=>p.progress<100).length;
+      const filteredTasks = useMemo(()=>tasks.filter(t=>filter==='all'||t.status===filter),[tasks,filter]);
+      function signOut(){setScreen('login');setRole('admin');setTab('dashboard');setModal('');}
+      function toggleTask(id){setTasks(old=>old.map(t=>t.id===id?{...t,status:t.status==='completed'?'in-progress':'completed'}:t));notify('Task status updated');}
+      function updateProgress(id,value){const progress=Math.max(0,Math.min(100,Number(value)));setProjects(old=>old.map(p=>p.id===id?{...p,progress,status:progress===100?'Completed':'Active'}:p));notify('Project progress updated');}
+      function submitTask(e){
+        e.preventDefault(); const f=e.currentTarget;
+        setTasks(old=>[{id:'t'+Date.now(),title:f.title.value,project:f.project.value,assignee:f.assignee.value,role:f.assigneeRole.value,status:'in-progress',priority:f.priority.value,dueDate:f.dueDate.value},...old]);
+        setModal('');notify('Task created successfully');
+      }
+      function submitUpdate(e){
+        e.preventDefault(); const f=e.currentTarget;
+        setUpdates(old=>[{id:'f'+Date.now(),author:f.author.value,role,location:f.location.value,timestamp:'Just now',text:f.notes.value,badge:f.badge.value||'Field Update'},...old]);
+        setModal('');notify('Field update submitted');
+      }
+      const button = "rounded-xl px-4 py-2.5 text-sm font-semibold transition hover:opacity-90 focus-visible:outline";
+      const primary = button+" bg-[#F47B20] text-white";
+      const secondary = button+" border border-[#E5DDD3] bg-white text-[#292524]";
+      return <div className="min-h-screen">
+        {screen==='login' && <div className="min-h-screen flex items-center justify-center p-4 fade">
+          <div className="w-full max-w-5xl bg-white rounded-3xl overflow-hidden shadow-xl border border-[#F9B233]/50 grid md:grid-cols-[3fr_2fr]">
+            <section className="p-8 sm:p-12 md:p-16">
+              <p className="text-xs uppercase tracking-[.2em] text-[#6B625A] font-semibold">NGO Management Workspace</p>
+              <h1 className="heading text-5xl font-semibold mt-3">Namaste</h1>
+              <p className="text-sm text-[#6B625A] mt-2 mb-8">Sign in to continue to your organization workspace.</p>
+              <form className="space-y-5" onSubmit={e=>{e.preventDefault();setScreen('roles')}}>
+                <label className="block text-sm font-medium">Email or username<input required type="email" defaultValue="admin@grassroots.ngo" className="mt-2 w-full rounded-xl border border-[#E5DDD3] bg-[#F8F6F2] px-4 py-3"/></label>
+                <label className="block text-sm font-medium">Password<input required type="password" defaultValue="demopassword" className="mt-2 w-full rounded-xl border border-[#E5DDD3] bg-[#F8F6F2] px-4 py-3"/></label>
+                <div className="flex justify-between text-sm"><button type="button" onClick={()=>setModal('help')} className="underline">Help</button><button type="button" onClick={()=>setModal('forgot')} className="underline">Forgot password?</button></div>
+                <button className={primary+" w-full"} type="submit">Sign In →</button>
+                <p className="text-xs text-[#6B625A]">Demo only: this form does not authenticate credentials.</p>
+              </form>
+            </section>
+            <aside className="bg-[#F9B233] p-8 sm:p-12 flex flex-col justify-between text-white min-h-64">
+              <div><span className="text-xs uppercase tracking-widest font-semibold">Field & Portfolio Engine</span><h2 className="heading text-3xl font-semibold mt-5">Turn grassroots effort into measurable change.</h2><p className="mt-4 text-sm leading-6">A unified workspace for field workers, project leads, and executive oversight.</p></div>
+              <p className="text-xs border-t border-white/40 pt-4 mt-8">NGO Suite · Demonstration Workspace</p>
+            </aside>
+          </div>
+        </div>}
+        {screen==='roles' && <div className="min-h-screen flex items-center justify-center p-4 fade">
+          <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden grid md:grid-cols-[3fr_2fr]">
+            <section className="p-8 sm:p-12"><p className="text-xs tracking-widest font-bold text-[#6B625A]">WELCOME BACK</p><h1 className="heading text-3xl font-semibold mt-2">Choose your workspace</h1><p className="text-sm text-[#6B625A] mt-2 mb-7">Select a demonstration role to open the dashboard.</p>
+              {Object.entries({admin:'Administrator',pm:'Project Manager',coordinator:'Coordinator'}).map(([key,name])=><button key={key} onClick={()=>{setRole(key);setScreen('app');setTab('dashboard');notify(name+' workspace opened')}} className="block w-full text-left p-5 mb-3 rounded-2xl border border-[#E5DDD3] hover:border-[#F47B20] hover:bg-[#FFF9F2]"><span className="font-semibold">{name}</span><span className="block text-xs text-[#6B625A] mt-1">{key==='admin'?'Portfolio oversight and all projects':key==='pm'?'Project execution and task assignments':'Field tasks and progress updates'}</span></button>)}
+              <button className="text-sm underline mt-3" onClick={()=>setScreen('login')}>← Back to login</button>
+            </section><aside className="bg-[#F9B233] text-white p-8 sm:p-12 flex flex-col justify-between"><div><p className="text-xs uppercase tracking-widest">Our shared mission</p><h2 className="heading text-4xl mt-5">Make every effort count.</h2><p className="mt-4 text-sm">A clear, shared workspace for measurable community impact.</p></div><p className="text-xs mt-8">Empowering communities</p></aside>
+          </div>
+        </div>}
+        {screen==='app' && <div className="min-h-screen">
+          <header className="sticky top-0 z-20 bg-white border-b border-[#E5DDD3] px-4 sm:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
+            <div><p className="text-[10px] uppercase tracking-widest text-[#6B625A] font-bold">NGO Platform</p><h1 className="heading text-xl font-semibold">Project Workspace</h1></div>
+            <nav className="flex flex-wrap gap-1 rounded-xl bg-[#FFF9F2] p-1" aria-label="Main navigation">{['dashboard','projects','tasks','analytics','reports'].map(t=><button key={t} onClick={()=>setTab(t)} className={"capitalize px-3 sm:px-4 py-2 rounded-lg text-sm "+(tab===t?'bg-[#F47B20] text-white':'hover:bg-white')}>{t}</button>)}</nav>
+            <div className="flex gap-2"><span className="hidden sm:inline self-center text-xs text-[#6B625A]">{roleInfo[role].name}</span><button className={secondary} onClick={signOut}>Sign out</button></div>
+          </header>
+          <main className="max-w-7xl mx-auto p-4 sm:p-8 fade">
+            {tab==='dashboard' && <div className="space-y-8">
+              <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#E5DDD3] pb-5"><div><h2 className="heading text-3xl font-semibold">{roleInfo[role].name} Overview</h2><p className="text-sm text-[#6B625A] mt-1">{roleInfo[role].subtitle}</p></div><button className={primary} onClick={()=>setModal(role==='coordinator'?'update':'task')}>{roleInfo[role].action}</button></div>
+              <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[['Active Projects',activeProjects],['Tasks Completed',`${completed}/${tasks.length}`],['Portfolio Budget',money(projects.reduce((s,p)=>s+p.budget,0))],['Community Reach','18.4k']].map(([label,value])=><article key={label} className="bg-white p-6 rounded-2xl border border-[#E5DDD3] shadow-sm"><p className="text-sm text-[#6B625A]">{label}</p><p className="text-3xl font-bold mt-3">{value}</p><p className="text-xs text-[#F47B20] mt-2">Workspace metric</p></article>)}
+              </section>
+              <section className="bg-white rounded-2xl border border-[#E5DDD3] p-5 sm:p-7"><div className="flex flex-wrap justify-between gap-2 mb-5"><div><h3 className="heading text-2xl font-semibold">Project Pulse</h3><p className="text-sm text-[#6B625A]">Adjust progress using the slider.</p></div><button className={secondary} onClick={()=>setTab('projects')}>All projects →</button></div>
+                <div className="space-y-6">{projects.map(p=><div key={p.id}><div className="flex flex-wrap justify-between gap-2"><div><h4 className="font-semibold">{p.title}</h4><p className="text-xs text-[#6B625A] mt-1">{p.location} · Lead: {p.lead}</p></div><span className="font-bold">{p.progress}%</span></div><input aria-label={p.title+' progress'} className="w-full mt-3 accent-orange-500" type="range" min="0" max="100" value={p.progress} onChange={e=>updateProgress(p.id,e.target.value)}/><div className="flex justify-between text-xs text-[#6B625A]"><span>{p.nextMilestone}</span><span>{money(p.spent)} / {money(p.budget)}</span></div></div>)}</div>
+              </section>
+              <section className="bg-white rounded-2xl border border-[#E5DDD3] p-5 sm:p-7"><div className="flex justify-between items-center gap-3 mb-4"><div><h3 className="heading text-2xl font-semibold">Recent Field Updates</h3><p className="text-sm text-[#6B625A]">Latest field notes</p></div><button className={primary} onClick={()=>setModal('update')}>+ Add update</button></div>{updates.length===0?<p className="text-sm text-[#6B625A]">No updates yet.</p>:<div className="space-y-3">{updates.map(u=><article key={u.id} className="rounded-xl bg-[#FFF9F2] border border-[#E5DDD3] p-4"><div className="flex flex-wrap justify-between gap-2 text-sm"><strong>{u.author}</strong><span className="text-xs text-[#6B625A]">{u.timestamp}</span></div><p className="text-sm mt-2">{u.text}</p><p className="text-xs text-[#6B625A] mt-2">{u.location} · {u.badge}</p></article>)}</div>}</section>
+            </div>}
+            {tab==='projects' && <section><div className="flex flex-wrap justify-between items-end gap-3 mb-6"><div><h2 className="heading text-3xl font-semibold">Projects Directory</h2><p className="text-sm text-[#6B625A] mt-1">Budgets, progress, and delivery milestones.</p></div><button className={primary} onClick={()=>setModal('task')}>+ Create task</button></div><div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">{projects.map(p=><article key={p.id} className="bg-white rounded-2xl border border-[#E5DDD3] p-6 flex flex-col"><div className="flex justify-between gap-3"><span className="text-xs rounded-full px-3 py-1 bg-[#FFF1E5] text-[#B94E08]">{p.category}</span><span className="text-xs font-semibold">{p.status}</span></div><h3 className="heading text-xl font-semibold mt-4">{p.title}</h3><p className="text-sm text-[#6B625A] mt-2 flex-1">{p.description}</p><p className="text-xs text-[#6B625A] mt-4">{p.location} · Lead: {p.lead}</p><div className="flex justify-between text-sm mt-5"><strong>{p.progress}% complete</strong><span>{money(p.spent)} / {money(p.budget)}</span></div><input aria-label={p.title+' progress'} type="range" min="0" max="100" value={p.progress} onChange={e=>updateProgress(p.id,e.target.value)} className="w-full accent-orange-500 mt-2"/><p className="text-xs text-[#6B625A] mt-3">{p.beneficiaries}</p></article>)}</div></section>}
+            {tab==='tasks' && <section><div className="flex flex-wrap justify-between items-end gap-3 mb-6"><div><h2 className="heading text-3xl font-semibold">Task Checklist</h2><p className="text-sm text-[#6B625A] mt-1">Mark tasks complete or reopen them.</p></div><div className="flex gap-2"><button className={secondary} onClick={()=>setModal('update')}>Field update</button><button className={primary} onClick={()=>setModal('task')}>+ Add task</button></div></div><div className="flex flex-wrap gap-2 mb-4">{['all','in-progress','review','completed'].map(s=><button key={s} onClick={()=>setFilter(s)} className={"rounded-lg px-3 py-2 text-xs font-semibold "+(filter===s?'bg-[#292524] text-white':'bg-white border border-[#E5DDD3]')}>{s==='all'?'All tasks':s.replace('-',' ')} ({s==='all'?tasks.length:tasks.filter(t=>t.status===s).length})</button>)}</div><div className="bg-white rounded-2xl border border-[#E5DDD3] divide-y divide-[#E5DDD3]">{filteredTasks.length===0?<p className="p-6 text-sm text-[#6B625A]">No tasks in this category.</p>:filteredTasks.map(t=><article key={t.id} className="p-4 sm:p-5 flex items-start gap-3"><input type="checkbox" aria-label={'Complete '+t.title} checked={t.status==='completed'} onChange={()=>toggleTask(t.id)} className="mt-1 h-5 w-5 accent-orange-500"/><div className="flex-1"><h3 className={"text-sm font-semibold "+(t.status==='completed'?'line-through text-[#6B625A]':'')}>{t.title}</h3><p className="text-xs text-[#6B625A] mt-2">{t.project} · {t.assignee} ({t.role}) · Due {t.dueDate}</p></div><span className="text-xs font-semibold capitalize">{t.status.replace('-',' ')}</span></article>)}</div></section>}
+            {tab==='analytics' && <section><h2 className="heading text-3xl font-semibold">Portfolio Impact Analytics</h2><p className="text-sm text-[#6B625A] mt-1 mb-6">Summary based on the current demonstration project data.</p><div className="grid md:grid-cols-3 gap-5">{[['Fund allocation',projects.map(p=>({name:p.title,value:p.budget}))],['Delivery progress',projects.map(p=>({name:p.title,value:p.progress}))],['Beneficiary reach',[{name:'Water',value:6200},{name:'Education',value:4800},{name:'Health',value:7400}]]].map(([title,items])=><article key={title} className="bg-white rounded-2xl border border-[#E5DDD3] p-6"><h3 className="heading text-xl font-semibold mb-4">{title}</h3>{items.map(item=>{const max=Math.max(...items.map(x=>x.value),1);return <div key={item.name} className="mb-4"><div className="flex justify-between gap-2 text-xs mb-1"><span>{item.name}</span><strong>{title==='Delivery progress'?item.value+'%':item.value.toLocaleString('en-IN')}</strong></div><div className="h-2 bg-[#F8F0E7] rounded-full overflow-hidden"><div className="h-full bg-[#F47B20]" style={{width:(item.value/max*100)+'%'}}/></div></div>})}</article>)}</div></section>}
+            {tab==='reports' && <section><h2 className="heading text-3xl font-semibold">Governance & Donor Reports</h2><p className="text-sm text-[#6B625A] mt-1 mb-6">Demonstration report actions.</p><div className="bg-white rounded-2xl border border-[#E5DDD3] divide-y divide-[#E5DDD3]">{['Q3 2026 Statutory Compliance & Fund Audit','Rajasthan Clean Water Initiative: Mid-Term Evaluation'].map(r=><div key={r} className="p-5 flex flex-wrap justify-between items-center gap-3"><div><h3 className="font-semibold text-sm">{r}</h3><p className="text-xs text-[#6B625A] mt-1">Sample report entry · Demo only</p></div><button className={secondary} onClick={()=>notify('This demo does not generate actual report files.')}>Export</button></div>)}</div></section>}
+          </main>
+          <footer className="border-t border-[#E5DDD3] bg-white px-4 sm:px-8 py-4 flex justify-between gap-3 text-xs text-[#6B625A]"><span className="font-semibold uppercase">{roleInfo[role].name}</span><span>NGO Project Management Platform · Demo</span></footer>
+        </div>}
+        {modal && <div className="fixed inset-0 z-50 bg-black/50 p-4 flex items-center justify-center" onMouseDown={e=>{if(e.target===e.currentTarget)setModal('')}}>
+          <section role="dialog" aria-modal="true" className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl p-6">
+            <div className="flex justify-between items-center border-b border-[#E5DDD3] pb-3 mb-4"><h2 className="heading text-xl font-semibold">{modal==='task'?'Create New Task':modal==='update'?'Submit Field Update':modal==='forgot'?'Password Recovery':'Help & Support'}</h2><button aria-label="Close dialog" className="text-xl px-2" onClick={()=>setModal('')}>×</button></div>
+            {modal==='task' && <form onSubmit={submitTask} className="space-y-4 text-sm">
+              <label className="block">Task title<input name="title" required className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3" placeholder="Describe the task"/></label>
+              <label className="block">Project<select name="project" className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3">{projects.map(p=><option key={p.id}>{p.title}</option>)}</select></label>
+              <div className="grid sm:grid-cols-2 gap-3"><label className="block">Assignee<input name="assignee" required className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3" placeholder="Name"/></label><label className="block">Assignee role<select name="assigneeRole" className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3"><option>Coordinator</option><option>Project Manager</option><option>Admin</option></select></label></div>
+              <div className="grid sm:grid-cols-2 gap-3"><label className="block">Priority<select name="priority" className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3"><option>Normal</option><option>Medium</option><option>High</option></select></label><label className="block">Due date<input name="dueDate" type="date" required className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3"/></label></div>
+              <div className="flex justify-end gap-2"><button type="button" className={secondary} onClick={()=>setModal('')}>Cancel</button><button className={primary}>Create task</button></div>
+            </form>}
+            {modal==='update' && <form onSubmit={submitUpdate} className="space-y-4 text-sm">
+              <label className="block">Author<input name="author" required defaultValue={roleInfo[role].name} className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3"/></label>
+              <label className="block">Field location<input name="location" required className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3" placeholder="Village / field site"/></label>
+              <label className="block">Progress notes<textarea name="notes" required rows="4" className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3" placeholder="Describe observations and progress"/></label>
+              <label className="block">Beneficiary tag (optional)<input name="badge" className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3" placeholder="e.g. 64 families verified"/></label>
+              <div className="flex justify-end gap-2"><button type="button" className={secondary} onClick={()=>setModal('')}>Cancel</button><button className={primary}>Publish update</button></div>
+            </form>}
+            {modal==='help' && <div className="text-sm space-y-3"><p>This is a front-end demonstration. Choose a workspace role after sign-in to explore projects, tasks, analytics, and field updates.</p><button className={primary} onClick={()=>setModal('')}>Close</button></div>}
+            {modal==='forgot' && <form onSubmit={e=>{e.preventDefault();setModal('');notify('Password recovery is not connected in this demo.')}} className="space-y-4 text-sm"><p>Password recovery is not connected to a server in this demo.</p><label className="block">Organization email<input type="email" required className="mt-1 w-full border border-[#E5DDD3] rounded-lg p-3" placeholder="you@organization.org"/></label><div className="flex justify-end gap-2"><button type="button" className={secondary} onClick={()=>setModal('')}>Cancel</button><button className={primary}>Continue</button></div></form>}
+          </section>
+        </div>}
+        {toast && <div role="status" aria-live="polite" className="fixed bottom-5 right-5 z-[60] bg-[#292524] text-white rounded-xl px-4 py-3 text-sm shadow-xl">{toast}</div>}
+      </div>;
     }
-
-    ReactDOM.createRoot(document.getElementById('root')).render(<MainApp />);
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>
